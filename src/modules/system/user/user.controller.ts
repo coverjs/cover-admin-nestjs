@@ -6,7 +6,7 @@ import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
 import { UserInfoVo } from './dto/user.vo';
 @ApiTags('系统管理-用户管理')
-@Controller('user')
+@Controller('system/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
