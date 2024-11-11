@@ -10,6 +10,8 @@ import { UserModule } from './modules/system/user/user.module';
 import { RoleModule } from './modules/system/role/role.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { ProfileModule } from './modules/profile/profile.module';
+import { PermisionsGuard } from './common/guard/permission-verify';
+import { MenuModule } from './modules/menu/menu.module';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { ProfileModule } from './modules/profile/profile.module';
     ProfileModule,
     UserModule,
     RoleModule,
+    MenuModule,
     UploadModule
   ],
   providers: [
@@ -28,6 +31,13 @@ import { ProfileModule } from './modules/profile/profile.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard
     },
+
+    // 角色权限权限守卫
+    {
+      provide: APP_GUARD,
+      useClass: PermisionsGuard
+    },
+
     // 统一响应格式
     {
       provide: APP_INTERCEPTOR,

@@ -13,17 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 权限表类型枚举
-enum PermissionType {
-  MENU
-  BUTTON
+enum NodeType {
+  DIRECTORY // 目录
+  PAGE // 页面
+  BUTTON // 按钮
 }
 
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   password  String
-  email     String?  @unique
+  email     String?
   nickname  String?
   salt      String   @default("")
   role      Role     @relation(fields: [roleId], references: [id])
@@ -36,45 +36,62 @@ model User {
 }
 
 model Role {
-  id                     Int                      @id @default(autoincrement())
-  name                   String                   @unique @map("role_name")
-  description            String?
-  user                   User[]
-  PermissionRelationRole PermissionRelationRole[]
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  user        User[]
+  menus       Menu[]   @relation("menu_to_role")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("co_roles")
 }
 
-model Permission {
-  id                     Int                      @id @default(autoincrement())
-  name                   String                   @unique @map("permission_name") // 权限名字
-  order                  Int?
-  parentId               Int?
-  parent                 Permission?              @relation("parent_children", fields: [parentId], references: [id])
-  children               Permission[]             @relation("parent_children")
-  icon                   String?
-  component              String? // 组件路径
-  path                   String? // 路由
-  type                   PermissionType           @default(MENU) // 权限类型，菜单或按钮
-  status                 Int                      @default(1) // 状态，1：启用，0：禁用
-  description            String?
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
-  PermissionRelationRole PermissionRelationRole[]
+model Menu {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(50)
+  code      String   @unique // 菜单编码唯一标识
+  sort      Int
+  type      NodeType @default(DIRECTORY) // 节点类别，目录、页面、操作
+  path      String?  @default("")
+  parentId  Int?
+  parent    Menu?    @relation("parent_children", fields: [parentId], references: [id])
+  children  Menu[]   @relation("parent_children")
+  roles     Role[]   @relation("menu_to_role")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@map("co_permissions")
+  @@map("co_menus")
 }
+
+// model Permissions {
+//   id                     Int                      @id @default(autoincrement())
+//   name                   String                   @unique
+//   order                  Int?
+//   parentId               Int?
+//   parent                 Permissions?             @relation("parent_children", fields: [parentId], references: [id])
+//   children               Permissions[]            @relation("parent_children")
+//   icon                   String?
+//   component              String? // 组件路径
+//   path                   String? // 路由
+//   type                   PermissionType           @default(MENU) // 权限类型，菜单或按钮
+//   status                 Int                      @default(1) // 状态，1：启用，0：禁用
+//   description            String?
+//   createdAt              DateTime                 @default(now())
+//   updatedAt              DateTime                 @updatedAt
+//   PermissionRelationRole PermissionRelationRole[]
+
+//   @@map("co_permissions")
+// }
 
 // 角色&权限中间表
-model PermissionRelationRole {
-  permissionId Int
-  permission   Permission @relation(fields: [permissionId], references: [id])
-  roleId       Int
-  role         Role       @relation(fields: [roleId], references: [id])
-  createdAt    DateTime   @default(now())
+// model PermissionRelationRole {
+//   permissionId Int
+//   permission   Permissions @relation(fields: [permissionId], references: [id])
+//   roleId       Int
+//   role         Role        @relation(fields: [roleId], references: [id])
+//   createdAt    DateTime    @default(now())
 
-  @@id([permissionId, roleId])
-  @@map("co_permission_relation_role")
-}
+//   @@id([permissionId, roleId])
+//   @@map("co_permission_relation_role")
+// }
