@@ -15,7 +15,7 @@ datasource db {
 
 enum NodeType {
   DIRECTORY // 目录
-  PAGE // 页面
+  MENU // 页面
   BUTTON // 按钮
 }
 
