@@ -8,6 +8,7 @@ export class RoleService {
   constructor(private prismaService: PrismaService) {}
   async create(createRoleDto: CreateRoleDto) {
     const { name } = createRoleDto;
+    const { menuIds, ...params } = createRoleDto;
     const role = await this.prismaService.role.findUnique({
       where: { name }
     });
@@ -15,7 +16,10 @@ export class RoleService {
     if (role) BusinessException.throwRoleNameExist();
 
     await this.prismaService.role.create({
-      data: createRoleDto
+      data: {
+        ...params,
+        menus: { connect: menuIds.map((id) => ({ id })) }
+      }
     });
   }
 
@@ -26,6 +30,7 @@ export class RoleService {
       skip,
       take
     });
+
     return { list, total: list.length };
   }
 }
