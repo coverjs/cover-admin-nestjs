@@ -16,7 +16,7 @@ datasource db {
 enum NodeType {
   DIRECTORY // 目录
   MENU // 页面
-  BUTTON // 按钮
+  ACTION // 操作
 }
 
 model User {
@@ -52,7 +52,7 @@ model Menu {
   name      String   @unique @db.VarChar(50)
   code      String   @unique // 菜单编码唯一标识
   sort      Int
-  type      NodeType @default(DIRECTORY) // 节点类别，目录、页面、操作
+  type      NodeType @default(DIRECTORY) // 节点类型，目录、页面、操作
   path      String?  @default("")
   parentId  Int?
   parent    Menu?    @relation("parent_children", fields: [parentId], references: [id])

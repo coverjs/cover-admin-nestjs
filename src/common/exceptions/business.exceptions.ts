@@ -25,10 +25,10 @@ export class BusinessException extends HttpException {
   }
 
   /**
-   * 无权限
+   * 角色无操作权限
    */
-  static throwForbidden() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.ACCESS_FORBIDDEN);
+  static throwNoPermissionToOperate() {
+    throw new BusinessException(BUSINESS_ERROR_CODE.NO_PERMISSION_TO_OPERATE);
   }
 
   /**

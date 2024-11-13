@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/menu.dto';
 import { PrismaService } from '@/common/prisma/prisma.service';
+import { filterValue } from '@/utils/common';
 
 @Injectable()
 export class MenuService {
@@ -11,6 +12,17 @@ export class MenuService {
         data: createMenuData
       })
     ]);
+  }
+
+  async findList() {
+    const data = await this.prismaService.menu.findMany({
+      where: {},
+      include: {
+        children: true
+      }
+    });
+
+    return filterValue(data, null);
   }
 
   // findAll() {

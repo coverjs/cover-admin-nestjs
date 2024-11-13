@@ -5,7 +5,7 @@ export class CreateMenuDto {
   @ApiProperty({ description: '名称', required: true, example: '首页' })
   name: string;
 
-  @ApiProperty({ description: '权限编码', required: true, example: 'home' })
+  @ApiProperty({ description: '权限码', required: true, example: 'home' })
   code: string;
 
   @ApiProperty({ description: '父级菜单id', required: false, example: 1 })
@@ -18,8 +18,8 @@ export class CreateMenuDto {
   path?: string;
 
   @ApiProperty({
-    description: '节点类型, "DIRECTORY": 目录; "MENU": 菜单; "BUTTON": 按钮',
-    enum: ['DIRECTORY', 'MENU', 'BUTTON'],
+    description: '节点类型, "DIRECTORY": 目录; "MENU": 菜单; "ACTION": 操作',
+    enum: ['DIRECTORY', 'MENU', 'ACTION'],
     default: 'DIRECTORY',
     example: 'DIRECTORY'
   })
