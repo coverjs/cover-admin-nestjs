@@ -1,11 +1,10 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/menu.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { handleTree } from '@/utils/common';
 import { MenuVo } from './dto/menu.vo';
-import { PermissionsAuth } from '@/common/decorators/permissions-auth.decorator';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 
 @ApiTags('系统管理-菜单管理')
