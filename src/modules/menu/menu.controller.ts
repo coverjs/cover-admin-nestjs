@@ -6,6 +6,7 @@ import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { handleTree } from '@/utils/common';
 import { MenuVo } from './dto/menu.vo';
 import { PermissionsAuth } from '@/common/decorators/permissions-auth.decorator';
+import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 
 @ApiTags('系统管理-菜单管理')
 @Controller('system/menu')
@@ -13,19 +14,22 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Post()
-  @ApiOperation({ summary: '新建菜单' })
-  @PermissionsAuth('system:menu:add')
+  @CommonApiOperation({
+    summary: '新建菜单',
+    description: '创建菜单',
+    permissionCode: 'system:menu:add'
+  })
   @CommonApiResponse()
   create(@Body() createMenuDto: CreateMenuDto) {
     return this.menuService.create(createMenuDto);
   }
 
   @Get()
-  @ApiOperation({
+  @CommonApiOperation({
     summary: '查询菜单列表',
-    description: '获取菜单列表数据<br><br>权限码: <code>system:menu:list</code>'
+    description: '获取菜单列表数据',
+    permissionCode: 'system:menu:list'
   })
-  @PermissionsAuth('system:menu:list')
   @CommonApiResponse({
     type: 'array',
     itemType: MenuVo
