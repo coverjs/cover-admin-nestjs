@@ -7,12 +7,16 @@ export const loadSwagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
     .setTitle('Cover Admin Service')
     .setDescription('Coverjs后台服务端接口文档')
+    .setTermsOfService('https://github.com/coverjs')
     .setVersion('1.0.0')
     .build();
 
   const documentFactory = () => {
     return SwaggerModule.createDocument(app, config, {
-      extraModels: [CommonResponseVo]
+      extraModels: [CommonResponseVo],
+      operationIdFactory: (controllerKey: string, methodKey: string) => {
+        return methodKey;
+      }
     });
   };
   SwaggerModule.setup('docs', app, documentFactory);
