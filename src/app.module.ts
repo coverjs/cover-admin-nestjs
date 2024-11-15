@@ -17,7 +17,7 @@ import { IoredisModule } from '@/common/redis/redis.module';
 @Module({
   imports: [
     IoredisModule,
-    // 根据环境加载不同环境变量
+    // 加载环境变量
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     AuthModule,

@@ -2,38 +2,55 @@ import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
 import type { Redis } from 'ioredis';
 import { parse } from 'redis-info';
+import { USER_INFO_KEY, USER_TOKEN_KEY, USER_VERSION_KEY } from '../constants';
 
 @Injectable()
 export class RedisService {
   constructor(@InjectRedis() private readonly redis: Redis) {}
 
-  // async getKeys(cacheName: string) {
-  //   return await this.redis.keys(`${cacheName}:*`);
-  // }
-
+  // 存储数据
   async set(key: string, value: any) {
-    await this.redis.set(key, value);
+    await this.redis.set(key, JSON.stringify(value));
   }
 
-  async get(key: string) {
-    return await this.redis.get(key);
+  // 读取数据
+  async get<T = any>(key: string) {
+    const value = await this.redis.get(key);
+    return value as T;
   }
-
-  // async clearCacheName(cacheName: string) {
-  //   const keys = await this.getKeys(cacheName);
-  //   await this.redis.del(keys);
-  // }
 
   async delete(key: string) {
     await this.redis.del(key);
   }
 
-  async clearCacheAll() {
-    // const cacheList = await this.getNames();
-    // const prismaArr = cacheList.map((item) => {
-    //   return this.clearCacheName(item.cacheName);
-    // });
-    // return await Promise.all(prismaArr);
+  /* 调整用户的缓存版本号，让用户重新登录 */
+  async addUserVersion(userId: number) {
+    return await this.redis.incr(`${USER_VERSION_KEY}:${userId}`);
+  }
+
+  async setUserToken(userId, token) {
+    await this.redis
+      .pipeline()
+      .set(`${USER_VERSION_KEY}:${userId}`, 1)
+      .set(`${USER_TOKEN_KEY}:${userId}`, token, 'EX', 7 * 24 * 60 * 60)
+      .exec();
+  }
+
+  async setUserInfo(userId, userInfo) {
+    await this.redis.set(`${USER_INFO_KEY}:${userId}`, JSON.stringify(userInfo));
+  }
+
+  async getUserInfo(userId) {
+    const value = await this.get(`${USER_INFO_KEY}:${userId}`);
+    return JSON.parse(value);
+  }
+
+  async getUserToken(userId) {
+    return await this.get(`${USER_TOKEN_KEY}:${userId}`);
+  }
+
+  async getUserVersion(userId: number) {
+    return await this.get<string>(`${USER_VERSION_KEY}:${userId}`);
   }
 
   /* 获取redis信息 */

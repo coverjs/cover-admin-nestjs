@@ -2,8 +2,9 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY } from '../constants';
+import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET } from '../constants';
 import { BusinessException } from '../exceptions/business.exceptions';
+import { RedisService } from '../redis/redis.service';
 
 /**
  * jwt全局校验守卫
@@ -18,10 +19,11 @@ import { BusinessException } from '../exceptions/business.exceptions';
 export class JwtAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly redisService: RedisService
   ) {}
 
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext) {
     // 获取request对象
     const [req, res] = context.getArgs();
 
@@ -50,11 +52,18 @@ export class JwtAuthGuard implements CanActivate {
       // 手动校验 token
       try {
         const jwtService = new JwtService();
-        const verifyRes = jwtService.verify(token, {
-          secret: this.configService.get('JWT_SECRET')
+        const user = jwtService.verify(token, {
+          secret: this.configService.get(JWT_SECRET)
         });
+
+        // 用户数据版本号不一致则抛出异常
+        const { version } = user;
+        const cacheVersion = await this.redisService.getUserVersion(user.id);
+        if (Number(cacheVersion) !== version) BusinessException.throwInvalidToken();
+
         // 写入对象
-        req.user = verifyRes;
+        req.user = user;
+
         return true;
       } catch (err) {
         console.log(err);

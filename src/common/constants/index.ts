@@ -9,3 +9,5 @@ export const IS_PUBLIC_KEY = 'isPublic';
 export const REOEATSUBMIT_METADATA = 'repeatSubmit';
 /* 操作权限标识 */
 export const PERMISSION_KEY_METADATA = 'common:permission';
+
+export * from './redis';
