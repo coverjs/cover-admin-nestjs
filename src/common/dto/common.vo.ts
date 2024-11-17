@@ -12,9 +12,10 @@ export class CommonResponseVo {
 export class UserInfoByParseToken {
   @ApiProperty({ description: '用户id' })
   id: number;
+
   @ApiProperty({ description: '用户名' })
   username: string;
 
-  @ApiProperty({ description: '权限码' })
-  permissions: string[];
+  @ApiProperty({ description: '用户信息版本' })
+  version: number;
 }

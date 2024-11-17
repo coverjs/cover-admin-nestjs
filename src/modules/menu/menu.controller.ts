@@ -35,7 +35,7 @@ export class MenuController {
   })
   async findList() {
     const list = await this.menuService.findList();
-    return handleTree(list);
+    return list;
   }
 
   // @Get(':id')

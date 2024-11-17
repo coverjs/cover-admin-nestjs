@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { User, Role } from './seed-data';
+import { User, Role, Menu } from './seed-data';
 
 export const initDatabase = async () => {
   const prisma = new PrismaClient();
@@ -9,6 +9,9 @@ export const initDatabase = async () => {
 
   // 创建用户数据
   await prisma.user.createMany({ data: User, skipDuplicates: true });
+
+  // 创建菜单数据
+  await prisma.menu.createMany({ data: Menu, skipDuplicates: true });
 };
 
 initDatabase();

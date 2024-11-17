@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/menu.dto';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { filterValue } from '@/utils/common';
+import { filterValue, handleTree } from '@/utils/common';
+import { MenuVo } from './dto/menu.vo';
 
 @Injectable()
 export class MenuService {
@@ -22,7 +23,7 @@ export class MenuService {
       }
     });
 
-    return filterValue(data, null);
+    return handleTree(filterValue(data, null)) as MenuVo[];
   }
 
   // findAll() {
