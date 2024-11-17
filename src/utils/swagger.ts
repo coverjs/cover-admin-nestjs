@@ -6,7 +6,9 @@ import { CommonResponseVo } from '@/common/dto';
 export const loadSwagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
     .setTitle('Cover Admin Service')
-    .setDescription('Coverjs后台服务端接口文档')
+    .setDescription(
+      'Coverjs后台服务端接口文档\n\n推荐使用<a href="https://apifox.com/apidoc/shared-aa58b273-f91f-4dd6-99f6-56e24d51461b">Apifox</a>查看更友好的接口文档'
+    )
     .setTermsOfService('https://github.com/coverjs')
     .setVersion('1.0.0')
     .build();
