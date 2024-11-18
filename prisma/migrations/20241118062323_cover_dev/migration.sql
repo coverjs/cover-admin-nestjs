@@ -31,6 +31,8 @@ CREATE TABLE `co_roles` (
 CREATE TABLE `co_menus` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
+    `locale` VARCHAR(50) NULL DEFAULT '',
+    `icon` VARCHAR(50) NULL,
     `code` VARCHAR(191) NOT NULL,
     `sort` INTEGER NOT NULL,
     `type` ENUM('DIRECTORY', 'MENU', 'ACTION') NOT NULL DEFAULT 'DIRECTORY',

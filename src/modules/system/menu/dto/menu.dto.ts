@@ -5,6 +5,12 @@ export class CreateMenuDto {
   @ApiProperty({ description: '名称', required: true, example: '首页' })
   name: string;
 
+  @ApiProperty({ description: '国际化', required: false })
+  locale: string;
+
+  @ApiProperty({ description: '图标', required: false, example: 'FileOutlined' })
+  icon?: string;
+
   @ApiProperty({ description: '权限码', required: true, example: 'home' })
   code: string;
 

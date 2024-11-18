@@ -8,8 +8,9 @@ Nestjs 开发的后台管理系统后端服务.
 - Nodejs框架: [Nestjs](https://docs.nestjs.com/)
 - ORM: [Prisma](https://www.prisma.io/docs)
 - 数据库: MySQL
+- 缓存: Redis
 
-## 目录结构:
+## 目录结构
 
 ```
 .
@@ -46,9 +47,10 @@ pnpm install
 
 ## 首次运行
 
-- 将 .env.example 重命名为 .env
-
+- 将 .env.example 复制并重命名为 .env
 - 修改 .env 中的配置, 将 DATABASE_URL 改为你的 MySQL 连接地址
+- 修改 .env 中的 JWT_SECRET 为一个随机字符串, 用于加密 JWT
+- 修改 .env 中的 PORT 为你想要的端口, 默认是 1118
 
 - 执行以下命令
 

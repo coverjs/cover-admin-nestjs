@@ -4,13 +4,13 @@ import { IS_PUBLIC_KEY, PERMISSION_KEY_METADATA } from '../constants';
 import { PermissionObj, LogicalEnum } from '../decorators/permissions-auth.decorator';
 import { BusinessException } from '../exceptions';
 import { UserInfoByParseToken } from '../dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class PermissionAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private prismaService: PrismaService
+    private redisService: RedisService
   ) {}
   async canActivate(context: ExecutionContext) {
     const permissionObj = this.reflector.getAllAndOverride<PermissionObj>(PERMISSION_KEY_METADATA, [
@@ -29,21 +29,13 @@ export class PermissionAuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user: UserInfoByParseToken = request.user;
-    const userInfo = await this.prismaService.user.findUnique({
-      where: {
-        id: user.id
-      },
-      include: {
-        role: {
-          include: {
-            menus: true
-          }
-        }
-      }
-    });
-    const permissions = userInfo.role.menus.map((menu) => menu.code);
+
+    const userInfo = await this.redisService.getUserInfo(user.id);
+    const { permissions } = userInfo;
+
     // 用户如果是管理员直接放行
-    if (userInfo.roleId === 1) return true;
+    if (permissions.includes('*:*:*')) return true;
+
     let result = false;
     if (permissionObj.logical === LogicalEnum.or) {
       // or 逻辑，只需匹配一个
@@ -57,7 +49,7 @@ export class PermissionAuthGuard implements CanActivate {
       });
     }
     // 抛出异常
-    if (!result) throw BusinessException.throwNoPermissionToOperate();
+    if (!result) BusinessException.throwNoPermissionToOperate();
 
     return result;
   }
