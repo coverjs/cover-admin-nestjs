@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto, RoleListDto } from './dto/role.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
 import { RoleVo } from './dto/role.vo';
