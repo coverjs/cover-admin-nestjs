@@ -17,7 +17,10 @@ export const loadSwagger = (app: INestApplication) => {
     return SwaggerModule.createDocument(app, config, {
       extraModels: [CommonResponseVo],
       operationIdFactory: (controllerKey: string, methodKey: string) => {
-        return methodKey;
+        const moduleName = controllerKey.replace('Controller', '');
+        const newModuleName = moduleName.replace(/^./, moduleName[0].toLowerCase());
+        const newMethodKey = methodKey.replace(/^./, methodKey[0].toUpperCase());
+        return newModuleName + newMethodKey;
       }
     });
   };
