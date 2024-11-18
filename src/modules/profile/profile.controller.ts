@@ -23,7 +23,7 @@ export class ProfileController {
   @ApiOperation({ summary: '修改个人信息' })
   @CommonApiResponse()
   async updateUserInfo(@User() user: UserInfoByParseToken, @Body() body: UpdateProfileDto) {
-    console.log(user, body);
+    return this.profileService.updateUserInfo(body);
   }
 
   @Patch('password')
