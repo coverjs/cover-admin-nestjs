@@ -11,12 +11,13 @@ import { RoleModule } from './modules/system/role/role.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { ProfileModule } from './modules/profile/profile.module';
 // import { PermisionsGuard } from './common/guard/permission-verify';
-import { MenuModule } from './modules/menu/menu.module';
+import { MenuModule } from './modules/system/menu/menu.module';
 import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
-
+import { IoredisModule } from '@/common/redis/redis.module';
 @Module({
   imports: [
-    // 根据环境加载不同环境变量
+    IoredisModule,
+    // 加载环境变量
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     AuthModule,
