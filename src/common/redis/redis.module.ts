@@ -7,7 +7,7 @@ import { RedisService } from './redis.service';
   imports: [
     RedisModule.forRoot({
       type: 'single',
-      url: 'redis://127.0.0.1:6379'
+      url: process.env.REDIS_URL
     })
   ],
   providers: [RedisService],
