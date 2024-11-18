@@ -8,6 +8,12 @@ export class MenuVo {
   @ApiProperty({ description: '名称', example: '首页' })
   name: string;
 
+  @ApiProperty({ description: '英文名称', required: false, example: 'home' })
+  enName: string;
+
+  @ApiProperty({ description: '图标', required: false, example: 'FileOutlined' })
+  icon?: string;
+
   @ApiProperty({ description: '权限编码' })
   code: string;
 
