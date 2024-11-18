@@ -37,19 +37,23 @@ export class RedisService {
       .exec();
   }
 
+  // 设置用户基本信息
   async setUserInfo(userId, userInfo) {
     await this.redis.set(`${USER_INFO_KEY}:${userId}`, JSON.stringify(userInfo));
   }
 
+  // 获取用户信息
   async getUserInfo(userId) {
     const value = await this.get(`${USER_INFO_KEY}:${userId}`);
     return JSON.parse(value);
   }
 
+  // 获取用户token
   async getUserToken(userId) {
     return await this.get(`${USER_TOKEN_KEY}:${userId}`);
   }
 
+  // 获取用户数据版本号
   async getUserVersion(userId: number) {
     return await this.get<string>(`${USER_VERSION_KEY}:${userId}`);
   }

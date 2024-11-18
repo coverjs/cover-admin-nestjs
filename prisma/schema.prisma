@@ -50,7 +50,7 @@ model Role {
 model Menu {
   id        Int      @id @default(autoincrement())
   name      String   @unique @db.VarChar(50)
-  enName    String?  @default("") @db.VarChar(50) // 英文名称
+  locale    String?  @default("") @db.VarChar(50) // 国际化
   icon      String?  @db.VarChar(50) // 图标
   code      String   @unique // 权限编码唯一标识
   sort      Int

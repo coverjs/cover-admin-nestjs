@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/menu.dto';
+import { MenuVo } from './dto/menu.vo';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { filterValue, handleTree } from '@/utils/common';
-import { MenuVo } from './dto/menu.vo';
 import { NodeType } from '@prisma/client';
 
 @Injectable()
@@ -35,17 +35,14 @@ export class MenuService {
     return handleTree(filterValue(data, null)) as MenuVo[];
   }
 
-  // findAll() {
-  //   return `This action returns all menu`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} menu`;
-  // }
-
-  // update(id: number, updateMenuDto: UpdateMenuDto) {
-  //   return `This action updates a #${id} menu`;
-  // }
+  async update(id: number, updateMenuDto: CreateMenuDto) {
+    await this.prismaService.menu.update({
+      where: {
+        id
+      },
+      data: updateMenuDto
+    });
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} menu`;
