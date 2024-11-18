@@ -5,8 +5,9 @@ import { AccountLoginDto } from './dto/auth.dto';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { encryptPassword } from '@/utils/cryptogram';
 import { BusinessException } from '@/common/exceptions';
-import { JWT_SECRET, TOKEN_EXPIRES } from '@/common/constants';
+import { JWT_SECRET } from '@/common/constants';
 import { RedisService } from '@/common/redis/redis.service';
+import config from 'config';
 
 @Injectable()
 export class AuthService {
@@ -42,14 +43,14 @@ export class AuthService {
 
       const { id, username, role } = userInfo;
       let permissions = [];
-      if (role.name === 'admin') permissions = ['*:*:*'];
+      if (role.name === config.adminRole) permissions = ['*:*:*'];
       else permissions = userInfo.role.menus.map((item) => item.code);
 
       const token = this.jwtService.sign(
         { id, username, version: 1 },
         {
           secret: this.configService.get(JWT_SECRET),
-          expiresIn: this.configService.get(TOKEN_EXPIRES)
+          expiresIn: config.tokenExpires
         }
       );
 

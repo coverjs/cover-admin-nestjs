@@ -31,7 +31,6 @@ export class PermissionAuthGuard implements CanActivate {
     const user: UserInfoByParseToken = request.user;
 
     const userInfo = await this.redisService.getUserInfo(user.id);
-    console.log(userInfo);
     const { permissions } = userInfo;
 
     // 用户如果是管理员直接放行

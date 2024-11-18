@@ -3,7 +3,6 @@ import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/menu.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { handleTree } from '@/utils/common';
 import { MenuVo } from './dto/menu.vo';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 

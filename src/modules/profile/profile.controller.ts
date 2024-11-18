@@ -5,7 +5,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { ProfileVo } from './dto/profile.vo';
 import { UserInfoByParseToken } from '@/common/dto';
-import { MenuVo } from '../menu/dto/menu.vo';
+import { MenuVo } from '../system/menu/dto/menu.vo';
 
 @Controller('profile')
 @ApiTags('个人信息')
@@ -20,7 +20,7 @@ export class ProfileController {
   }
 
   @Get('/menus')
-  @ApiOperation({ summary: '获取当前用户菜单权限' })
+  @ApiOperation({ summary: '获取当前用户菜单' })
   @CommonApiResponse({
     type: 'array',
     itemType: MenuVo

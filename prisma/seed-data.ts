@@ -1,13 +1,13 @@
 import { NodeType } from '@prisma/client';
-import { encryptPassword } from './cryptogram';
+import config from '../config';
 
 export const User = [
   {
     username: 'admin',
-    password: encryptPassword('admin', '1118'),
+    password: 'ZN7CwACwQj0ZooEai8zyjw==',
     salt: '1118',
     nickname: 'hacxy',
-    email: 'admin@admin.com',
+    email: 'hacxy.js@outlook.com',
     roleId: 1
   }
 ];
@@ -15,7 +15,7 @@ export const User = [
 export const Role = [
   {
     id: 1,
-    name: 'admin',
+    name: config.adminRole,
     description: '管理员'
   }
 ];
@@ -24,6 +24,8 @@ export const Menu = [
   {
     id: 1,
     name: '系统管理',
+    icon: 'FolderOutlined',
+    enName: 'system',
     code: 'system',
     type: NodeType.DIRECTORY,
     sort: 1,
@@ -32,6 +34,8 @@ export const Menu = [
   {
     id: 2,
     name: '用户管理',
+    icon: 'FileOutlined',
+    enName: 'user',
     code: 'system:user',
     type: NodeType.MENU,
     sort: 1,
@@ -57,8 +61,11 @@ export const Menu = [
   {
     id: 5,
     name: '角色管理',
+    icon: 'FileOutlined',
+    enName: 'role',
     code: 'system:role',
     type: NodeType.MENU,
+    path: '/system/role',
     sort: 1,
     parentId: 1
   },
@@ -81,8 +88,11 @@ export const Menu = [
   {
     id: 8,
     name: '菜单管理',
+    enName: 'menu',
+    icon: 'FileOutlined',
     code: 'system:menu',
     type: NodeType.MENU,
+    path: '/system/menu',
     sort: 1,
     parentId: 1
   },

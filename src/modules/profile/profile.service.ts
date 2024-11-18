@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { UserInfoByParseToken } from '@/common/dto';
-import { MenuService } from '../menu/menu.service';
+import { MenuService } from '../system/menu/menu.service';
 import { handleTree } from '@/utils/common';
-import { MenuVo } from '../menu/dto/menu.vo';
+import { MenuVo } from '../system/menu/dto/menu.vo';
 
 @Injectable()
 export class ProfileService {

@@ -50,7 +50,9 @@ model Role {
 model Menu {
   id        Int      @id @default(autoincrement())
   name      String   @unique @db.VarChar(50)
-  code      String   @unique // 菜单编码唯一标识
+  enName    String?  @default("") @db.VarChar(50) // 英文名称
+  icon      String?  @db.VarChar(50) // 图标
+  code      String   @unique // 权限编码唯一标识
   sort      Int
   type      NodeType @default(DIRECTORY) // 节点类型，目录、页面、操作
   path      String?  @default("")

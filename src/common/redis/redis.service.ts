@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { Redis } from 'ioredis';
 import { parse } from 'redis-info';
 import { USER_INFO_KEY, USER_TOKEN_KEY, USER_VERSION_KEY } from '../constants';
+import config from 'config';
 
 @Injectable()
 export class RedisService {
@@ -32,7 +33,7 @@ export class RedisService {
     await this.redis
       .pipeline()
       .set(`${USER_VERSION_KEY}:${userId}`, 1)
-      .set(`${USER_TOKEN_KEY}:${userId}`, token, 'EX', 7 * 24 * 60 * 60)
+      .set(`${USER_TOKEN_KEY}:${userId}`, token, 'EX', config.tokenExpires)
       .exec();
   }
 
