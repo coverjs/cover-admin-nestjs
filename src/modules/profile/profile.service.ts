@@ -12,7 +12,7 @@ export class ProfileService {
     private readonly menuService: MenuService
   ) {}
   async getUserInfo(user: UserInfoByParseToken) {
-    console.log(user, 'user');
+    console.log(user, 'user111');
     const { password, salt, ...userInfo } = await this.prismaService.user.findUnique({
       where: {
         id: user.id

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { User } from '@/common/decorators/user';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
