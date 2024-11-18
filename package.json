@@ -21,9 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:g": "prisma generate",
     "db:m": "prisma migrate dev --name cover_dev",
-    "db:deploy": "prisma migrate deploy",
     "db:s": "prisma studio",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset",
+    "db:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.1",
@@ -33,12 +34,12 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^8.0.1",
-    "@prisma/client": "^5.21.1",
+    "@prisma/client": "^5.22.0",
     "axios": "^1.7.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.13",
-    "prisma": "^5.21.1",
+    "prisma": "^5.22.0",
     "reflect-metadata": "^0.2.0",
     "request-ip": "^3.3.0",
     "rxjs": "^7.8.1"

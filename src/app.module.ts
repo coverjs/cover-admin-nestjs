@@ -6,21 +6,25 @@ import { BaseExceptionsFilter, HttpExeptionsFilter } from './common/exceptions';
 import { ResponseInterceptor } from './common/interceptor';
 import { AuthModule } from './modules/auth/auth.module';
 import { PrismaModule } from './common/prisma/prisma.module';
-import { UserModule } from './modules/user/user.module';
-import { RoleModule } from './modules/role/role.module';
+import { UserModule } from './modules/system/user/user.module';
+import { RoleModule } from './modules/system/role/role.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { ProfileModule } from './modules/profile/profile.module';
+// import { PermisionsGuard } from './common/guard/permission-verify';
+import { MenuModule } from './modules/menu/menu.module';
+import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
 
 @Module({
   imports: [
     // 根据环境加载不同环境变量
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
-    UploadModule,
     AuthModule,
+    ProfileModule,
     UserModule,
     RoleModule,
-    ProfileModule
+    MenuModule,
+    UploadModule
   ],
   providers: [
     // jwt 校验守卫
@@ -28,6 +32,13 @@ import { ProfileModule } from './modules/profile/profile.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard
     },
+
+    // 角色权限权限守卫
+    {
+      provide: APP_GUARD,
+      useClass: PermissionAuthGuard
+    },
+
     // 统一响应格式
     {
       provide: APP_INTERCEPTOR,

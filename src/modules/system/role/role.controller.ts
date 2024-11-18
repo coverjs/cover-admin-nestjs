@@ -5,8 +5,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
 import { RoleVo } from './dto/role.vo';
-@ApiTags('角色管理')
-@Controller('role')
+@ApiTags('系统管理-角色管理')
+@Controller('system/role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 

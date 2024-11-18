@@ -50,6 +50,7 @@ jobs:
             mkdir -p /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
             rm -rf /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/*
             cp -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
+            rm -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/
             cd /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env

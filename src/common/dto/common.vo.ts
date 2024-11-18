@@ -8,9 +8,13 @@ export class CommonResponseVo {
   @ApiProperty({ description: '响应信息', default: 'ok' })
   msg: string;
 }
+
 export class UserInfoByParseToken {
   @ApiProperty({ description: '用户id' })
   id: number;
   @ApiProperty({ description: '用户名' })
   username: string;
+
+  @ApiProperty({ description: '权限码' })
+  permissions: string[];
 }

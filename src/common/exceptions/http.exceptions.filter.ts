@@ -1,10 +1,4 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import * as dayjs from 'dayjs';
 import type { Request, Response } from 'express';
 import { BusinessException } from './business.exceptions';
@@ -29,7 +23,7 @@ export class HttpExeptionsFilter implements ExceptionFilter {
       console.log(error);
       respones.status(error.statusCode || respones.statusCode).send({
         code: error.code,
-        msg: error.msg,
+        msg: error.msg
       });
       return;
     }
@@ -41,14 +35,14 @@ export class HttpExeptionsFilter implements ExceptionFilter {
         code: status,
         timestamp: time,
         path: request.url,
-        msg: exResponse,
+        msg: exResponse
       };
     } else {
       responseJson = {
         code: status,
         timestamp: time,
         path: request.url,
-        msg: exResponse.message,
+        msg: exResponse.message
       };
     }
 
