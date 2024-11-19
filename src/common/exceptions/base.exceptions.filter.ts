@@ -10,9 +10,6 @@ export class BaseExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
-    // 打印错误信息
-    console.log(exception);
-
     const exResponse = new ServiceUnavailableException().getResponse();
     if (typeof exResponse === 'string') {
       response.status(HttpStatus.SERVICE_UNAVAILABLE).send({
