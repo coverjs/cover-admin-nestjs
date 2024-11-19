@@ -1,3 +1,4 @@
+import { filterValue } from '@/utils/format';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,9 +11,10 @@ export class ResponseInterceptor implements NestInterceptor {
     // ResponseObj.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
     return next.handle().pipe(
       map((data) => {
+        const finalData = filterValue(data);
         return {
           code: 0,
-          data,
+          data: finalData,
           msg: 'ok'
         };
       })

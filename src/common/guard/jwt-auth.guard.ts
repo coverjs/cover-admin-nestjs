@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET } from '../constants';
 import { BusinessException } from '../exceptions/business.exceptions';
 import { RedisService } from '../redis/redis.service';
+import { Logger } from 'nestjs-pino';
 
 /**
  * jwt全局校验守卫
@@ -20,7 +21,8 @@ export class JwtAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly configService: ConfigService,
-    private readonly redisService: RedisService
+    private readonly redisService: RedisService,
+    private readonly logger: Logger
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -66,7 +68,7 @@ export class JwtAuthGuard implements CanActivate {
 
         return true;
       } catch (err) {
-        console.log(err);
+        this.logger.error(err);
         BusinessException.throwInvalidToken();
       }
     } else {

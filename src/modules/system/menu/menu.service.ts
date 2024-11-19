@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateMenuDto } from './dto/menu.dto';
 import { MenuVo } from './dto/menu.vo';
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { filterValue, handleTree } from '@/utils/common';
 import { NodeType } from '@prisma/client';
+import { handleTree } from '@/utils/format';
 
 @Injectable()
 export class MenuService {
@@ -32,7 +32,7 @@ export class MenuService {
       }
     });
 
-    return handleTree(filterValue(data, null)) as MenuVo[];
+    return handleTree(data) as MenuVo[];
   }
 
   async update(id: number, updateMenuDto: CreateMenuDto) {

@@ -14,9 +14,18 @@ import { ProfileModule } from './modules/profile/profile.module';
 import { MenuModule } from './modules/system/menu/menu.module';
 import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
 import { IoredisModule } from '@/common/redis/redis.module';
+import { LoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
     IoredisModule,
+    // 日志模块
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+        // timestamp: () => `,"time":"${new Date(Date.now()).toISOString()}"`
+        transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined
+      }
+    }),
     // 加载环境变量
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
