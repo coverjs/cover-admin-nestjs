@@ -31,8 +31,8 @@ export class UserService {
         nickname: {
           contains: nickname
         },
-        roleId,
-        enable
+        roleId: roleId ? Number(roleId) : undefined,
+        enable: enable ? Boolean(enable) : undefined
       },
       include: {
         role: true
