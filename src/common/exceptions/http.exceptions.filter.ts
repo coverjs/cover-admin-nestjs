@@ -20,7 +20,6 @@ export class HttpExeptionsFilter implements ExceptionFilter {
     if (exception instanceof BusinessException) {
       const error: any = exception.getResponse();
 
-      console.log(error);
       respones.status(error.statusCode || respones.statusCode).send({
         code: error.code,
         msg: error.msg

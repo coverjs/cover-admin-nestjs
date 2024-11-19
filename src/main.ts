@@ -1,13 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { loadSwagger } from './utils/swagger';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['debug', 'error', 'warn', 'fatal', 'verbose']
+    bufferLogs: true
   });
-
+  app.useLogger(app.get(Logger));
   app.enableCors();
+
   // load swagger docs
   loadSwagger(app);
 
