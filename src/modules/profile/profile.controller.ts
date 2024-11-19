@@ -24,14 +24,14 @@ export class ProfileController {
   @ApiOperation({ summary: '修改当前登录用户信息' })
   @CommonApiResponse()
   async updateUserInfo(@User() user: UserInfoByParseToken, @Body() body: UpdateProfileDto) {
-    return this.profileService.updateUserInfo(user, body);
+    return await this.profileService.updateUserInfo(user, body);
   }
 
   @Patch('/updatePassword')
   @ApiOperation({ summary: '修改密码' })
   @CommonApiResponse()
   async updatePassword(@User() user: UserInfoByParseToken, @Body() body: UpdatePasswordDto) {
-    return this.profileService.updatePassword(user, body);
+    return await this.profileService.updatePassword(user, body);
   }
 
   @Get('/menus')

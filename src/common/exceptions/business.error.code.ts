@@ -49,6 +49,12 @@ export const BUSINESS_ERROR_CODE = {
     msg: '用户名或密码不正确'
   },
 
+  // 修改密码验证旧密码不正确
+  OLD_PASSWORD_INCORRECT: {
+    code: 1002,
+    msg: '旧密码不正确'
+  },
+
   COMMON_BUSINESS_ERROR: {
     code: 500,
     msg: '系统错误'

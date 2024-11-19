@@ -64,6 +64,14 @@ export class BusinessException extends HttpException {
   }
 
   /**
+   * 修改密码时旧的密码验证错误
+   */
+
+  static throwOldPasswordIncorrect() {
+    throw new BusinessException(BUSINESS_ERROR_CODE.OLD_PASSWORD_INCORRECT);
+  }
+
+  /**
    * 角色名重复
    */
   static throwRoleNameExist() {
