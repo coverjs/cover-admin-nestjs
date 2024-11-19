@@ -4,6 +4,8 @@ import { UserInfoByParseToken } from '@/common/dto';
 import { MenuService } from '../system/menu/menu.service';
 import { handleTree } from '@/utils/common';
 import { MenuVo } from '../system/menu/dto/menu.vo';
+import { UpdateProfileDto, UpdatePasswordDto } from './dto/profile.dto';
+import { console } from 'inspector';
 
 @Injectable()
 export class ProfileService {
@@ -11,8 +13,8 @@ export class ProfileService {
     private readonly prismaService: PrismaService,
     private readonly menuService: MenuService
   ) {}
+  // 获取用户信息
   async getUserInfo(user: UserInfoByParseToken) {
-    console.log(user, 'user111');
     const { password, salt, ...userInfo } = await this.prismaService.user.findUnique({
       where: {
         id: user.id
@@ -24,6 +26,24 @@ export class ProfileService {
     return userInfo;
   }
 
+  // 更新个人中心用户信息
+  async updateUserInfo(user: UserInfoByParseToken, info: UpdateProfileDto) {
+    await this.prismaService.user.update({
+      where: {
+        id: user.id
+      },
+      data: info
+    });
+  }
+
+  // 重置密码
+  updatePassword(user: UserInfoByParseToken, info: UpdatePasswordDto) {
+    console.log('走了吗');
+    console.log(user, 'user222111', info);
+    return 'sss';
+  }
+
+  // 获取用户菜单
   async getUserMenus(userId: number): Promise<MenuVo[]> {
     const roleInfo = await this.prismaService.user.findUnique({
       select: {
