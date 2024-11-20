@@ -1,7 +1,7 @@
-name: DeployProduction
+name: DeployTest
 on:
   push: # 监听调用时机为push事件
-    branches: ['main']
+    branches: ['test']
 jobs:
   deploy:
     runs-on: ubuntu-latest # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
@@ -33,31 +33,27 @@ jobs:
       - name: 移动产物至到服务器
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.TEST_SSH_HOST }}
+          username: ${{ secrets.TEST_SSH_USERNAME }}
+          password: ${{ secrets.TEST_SSH_PASSWORD }}
           source: 'dist,prisma,package.json,pnpm-lock.yaml,ecosystem.config.js,tsconfig.json,config'
-          target: '/${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/'
+          target: '/${{secrets.TEST_SSH_USERNAME}}/Projects/.cover-admin-service_temp/'
           rm: true
 
       - name: 执行远程脚本命令
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.TEST_SSH_HOST }}
+          username: ${{ secrets.TEST_SSH_USERNAME }}
+          password: ${{ secrets.TEST_SSH_PASSWORD }}
           script: |
-            mkdir -p /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
-            rm -rf /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/*
-            cp -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
-            rm -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/
-            cd /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-            echo "TOKEN_EXPIRES=${{ secrets.TOKEN_EXPIRES }}" >> .env
-            echo "PORT=${{ secrets.PORT }}" >> .env
-            echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
-            echo "NODE_ENV=${{ secrets.NODE_ENV }}"
+            mkdir -p /${{secrets.TEST_SSH_USERNAME}}/Projects/cover-admin-service/
+            rm -rf /${{secrets.TEST_SSH_USERNAME}}/Projects/cover-admin-service/*
+            cp -rf /${{secrets.TEST_SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.TEST_SSH_USERNAME}}/Projects/cover-admin-service/
+            rm -rf /${{secrets.TEST_SSH_USERNAME}}/Projects/.cover-admin-service_temp/
+            cd /${{secrets.TEST_SSH_USERNAME}}/Projects/cover-admin-service/
+						touch .env
+            echo "{{ secrets.TEST_ENV }}" >> .env
             pnpm install
             npx prisma migrate deploy
             pnpm db:g
