@@ -31,3 +31,8 @@ export class CreateMenuDto {
   })
   type: NodeType;
 }
+
+export class UpdateMenuDto extends CreateMenuDto {
+  @ApiProperty({ description: '父级菜单id, 需要移除时传null', required: false, example: 1 })
+  parentId?: number;
+}

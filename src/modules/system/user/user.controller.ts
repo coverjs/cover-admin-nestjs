@@ -11,7 +11,6 @@ import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec
 @Controller('system/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
   @Post()
   @CommonApiOperation({ summary: '新建用户', permissionCode: 'system:user:add' })
   @CommonApiResponse()
