@@ -1,9 +1,8 @@
-import { HttpCode, Type, applyDecorators } from '@nestjs/common';
+import { Type, applyDecorators } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import { CommonResponseVo } from '../dto';
 import { UnityResponseOptions } from '../types';
-import { IsPublic } from './public';
 
 type Model = SchemaObject | ReferenceObject;
 
@@ -86,8 +85,7 @@ const handleSwaggerResponse = (
 export const CommonApiResponse = (
   options: UnityResponseOptions & { example?: any; itemType?: Type<any>; isPublic?: boolean } = {}
 ) => {
-  const { isPublic = false } = options;
-  let decorators = [HttpCode(200), ApiResponse(handleSwaggerResponse(options)), IsPublic(isPublic)];
+  let decorators = [ApiResponse(handleSwaggerResponse(options))];
   if (options.type && typeof options.type !== 'string') {
     decorators = [...decorators, ApiExtraModels(options.type)];
   }

@@ -4,7 +4,10 @@ export const BUSINESS_ERROR_CODE = {
    */
   COMMON: {
     code: 5000,
-    msg: '非正常请求'
+    msg: {
+      'zh-CN': '非正常请求',
+      'en-US': 'Non-normal request'
+    }
   },
 
   /**
@@ -12,15 +15,21 @@ export const BUSINESS_ERROR_CODE = {
    */
   INVALID_TOKEN: {
     code: 401,
-    msg: '无效身份或身份已过期'
+    msg: {
+      'zh-CN': '无效或过期token',
+      'en-US': 'Invalid or expired token'
+    }
   },
 
   /**
-   * 禁止访问
+   * 角色无操作权限
    */
-  ACCESS_FORBIDDEN: {
-    code: 403,
-    msg: '抱歉哦，您无此权限！'
+  NO_PERMISSION_TO_OPERATE: {
+    code: 406,
+    msg: {
+      'zh-CN': '无权操作, 请联系管理员',
+      'en-US': 'No permission to operate, please contact the administrator'
+    }
   },
 
   /**
@@ -28,7 +37,10 @@ export const BUSINESS_ERROR_CODE = {
    */
   FIELD_INCORRECT: {
     code: 1001,
-    msg: '字段不合法'
+    msg: {
+      'zh-CN': '字段错误',
+      'en-US': 'Field error'
+    }
   },
 
   /**
@@ -36,26 +48,50 @@ export const BUSINESS_ERROR_CODE = {
    */
   DATA_PROTECTED: {
     code: 1005,
-    msg: '该数据已被保护'
+    msg: {
+      'zh-CN': '数据已被保护',
+      'en-US': 'Data is protected'
+    }
   },
+
   USER_DOES_NOT_EXIST: {
     code: 2000,
-    msg: '用户不存在'
+    msg: {
+      'zh-CN': '用户不存在',
+      'en-US': 'User does not exist'
+    }
   },
+
   USERNAME_OR_PASSWORD_INCORRECT: {
     code: 1000,
-    msg: '用户名或密码不正确'
+    msg: {
+      'zh-CN': '用户名或密码不正确',
+      'en-US': 'Username or password is incorrect'
+    }
   },
-  COMMON_BUSINESS_ERROR: {
-    code: 500,
-    msg: '系统错误'
+
+  // 修改密码验证旧密码不正确
+  OLD_PASSWORD_INCORRECT: {
+    code: 1002,
+    msg: {
+      'zh-CN': '旧密码不正确',
+      'en-US': 'Old password is incorrect'
+    }
   },
+
   ROLE_NAME_EXIST: {
     code: 1002,
-    msg: '角色名称已存在'
+    msg: {
+      'zh-CN': '角色名称已存在',
+      'en-US': 'Role name already exists'
+    }
   },
+
   ROLE_NAME_NOT_EXIST: {
     code: 1003,
-    msg: '角色名称不能为空'
+    msg: {
+      'zh-CN': '角色名称不存在',
+      'en-US': 'Role name does not exist'
+    }
   }
 };

@@ -1,4 +1,4 @@
-import { RoleVo } from '@/modules/role/dto/role.vo';
+import { RoleVo } from '@/modules/system/role/dto/role.vo';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserInfoVo {

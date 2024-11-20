@@ -6,14 +6,8 @@ import { BUSINESS_ERROR_CODE } from './business.error.code';
  * 自定义业务异常
  */
 export class BusinessException extends HttpException {
-  constructor(err: BusinessError | string) {
+  constructor(err?: BusinessError) {
     // 处理公共错误
-    if (typeof err === 'string') {
-      err = {
-        code: BUSINESS_ERROR_CODE.COMMON.code,
-        msg: err
-      };
-    }
     super(err, BUSINESS_ERROR_CODE.COMMON.code);
   }
 
@@ -25,21 +19,18 @@ export class BusinessException extends HttpException {
   }
 
   /**
-   * 无权限
+   * 角色无操作权限
    */
-  static throwForbidden() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.ACCESS_FORBIDDEN);
+  static throwNoPermissionToOperate() {
+    // throw new BusinessException(BUSINESS_ERROR_CODE.NO_PERMISSION_TO_OPERATE);
   }
 
   /**
    * 字段不合法
    * @param msg
    */
-  static throwFieldsIncorrect(msg: string = '字段不合法') {
-    throw new BusinessException({
-      code: BUSINESS_ERROR_CODE.FIELD_INCORRECT.code,
-      msg
-    });
+  static throwFieldsIncorrect() {
+    throw new BusinessException(BUSINESS_ERROR_CODE.FIELD_INCORRECT);
   }
 
   /**
@@ -64,6 +55,13 @@ export class BusinessException extends HttpException {
   }
 
   /**
+   * 修改密码时旧的密码验证错误
+   */
+  static throwOldPasswordIncorrect() {
+    throw new BusinessException(BUSINESS_ERROR_CODE.OLD_PASSWORD_INCORRECT);
+  }
+
+  /**
    * 角色名重复
    */
   static throwRoleNameExist() {
@@ -72,7 +70,7 @@ export class BusinessException extends HttpException {
   /**
    * 数据已被保护
    */
-  // static throwDataProtected() {
-  //   throw new BusinessException(BUSINESS_ERROR_CODE.DATA_PROTECTED);
-  // }
+  static throwDataProtected() {
+    throw new BusinessException(BUSINESS_ERROR_CODE.DATA_PROTECTED);
+  }
 }
