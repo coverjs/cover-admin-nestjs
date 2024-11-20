@@ -1,3 +1,3 @@
-import { UserInfoVo } from '@/modules/user/dto/user.vo';
+import { UserInfoVo } from '@/modules/system/user/dto/user.vo';
 
 export class ProfileVo extends UserInfoVo {}

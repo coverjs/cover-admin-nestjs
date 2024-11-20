@@ -1,9 +1,5 @@
 import { Type } from '@nestjs/common';
-import {
-  ApiBodyOptions,
-  ApiParamOptions,
-  ApiQueryOptions,
-} from '@nestjs/swagger';
+import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
 
 export type MethodType = 'Post' | 'Get' | 'Delete' | 'Put' | 'Patch';
 

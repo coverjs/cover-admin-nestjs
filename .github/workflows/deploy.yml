@@ -36,7 +36,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: 'dist,prisma,package.json,pnpm-lock.yaml,ecosystem.config.js,tsconfig.json'
+          source: 'dist,prisma,package.json,pnpm-lock.yaml,ecosystem.config.js,tsconfig.json,config'
           target: '/${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/'
           rm: true
 
@@ -50,11 +50,14 @@ jobs:
             mkdir -p /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
             rm -rf /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/*
             cp -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
+            rm -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/
             cd /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
             echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
             echo "TOKEN_EXPIRES=${{ secrets.TOKEN_EXPIRES }}" >> .env
             echo "PORT=${{ secrets.PORT }}" >> .env
+            echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
+            echo "NODE_ENV=${{ secrets.NODE_ENV }}"
             pnpm install
             npx prisma migrate deploy
             pnpm db:g

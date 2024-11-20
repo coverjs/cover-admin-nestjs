@@ -1,1 +1,1 @@
-export * from './uniResponse';
+export * from './response.interceptor';
