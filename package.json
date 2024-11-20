@@ -43,6 +43,7 @@
     "dayjs": "^1.11.13",
     "ioredis": "^5.4.1",
     "nestjs-pino": "^4.1.0",
+    "node-xlsx": "^0.24.0",
     "pino-http": "^10.3.0",
     "pino-pretty": "^13.0.0",
     "prisma": "^5.22.0",

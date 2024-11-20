@@ -14,6 +14,8 @@ import { ProfileModule } from './modules/profile/profile.module';
 import { MenuModule } from './modules/system/menu/menu.module';
 import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
 import { IoredisModule } from '@/common/redis/redis.module';
+import { XlsxModule } from '@/common/xlsx/xlsx.module';
+
 import { LoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
@@ -34,7 +36,8 @@ import { LoggerModule } from 'nestjs-pino';
     UserModule,
     RoleModule,
     MenuModule,
-    UploadModule
+    UploadModule,
+    XlsxModule
   ],
   providers: [
     // jwt 校验守卫
