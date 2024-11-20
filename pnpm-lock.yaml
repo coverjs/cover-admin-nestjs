@@ -94,7 +94,7 @@ importers:
         specifier: ^29.5.2
         version: 29.5.14
       '@types/multer':
-        specifier: ^1.4.11
+        specifier: ^1.4.12
         version: 1.4.12
       '@types/node':
         specifier: ^20.3.1
