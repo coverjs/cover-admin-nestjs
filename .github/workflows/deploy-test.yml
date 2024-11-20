@@ -52,7 +52,7 @@ jobs:
             cp -rf /${{secrets.TEST_SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.TEST_SSH_USERNAME}}/Projects/cover-admin-service/
             rm -rf /${{secrets.TEST_SSH_USERNAME}}/Projects/.cover-admin-service_temp/
             cd /${{secrets.TEST_SSH_USERNAME}}/Projects/cover-admin-service/
-						touch .env
+            touch .env
             echo "${{ secrets.TEST_ENV }}" >> .env
             pnpm install
             npx prisma migrate deploy
