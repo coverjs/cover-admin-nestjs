@@ -11,7 +11,6 @@ import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec
 @Controller('system/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
   @Post()
   @CommonApiOperation({ summary: '新建用户', permissionCode: 'system:user:add' })
   @CommonApiResponse()
@@ -21,7 +20,7 @@ export class UserController {
 
   @Get()
   @CommonApiOperation({ summary: '获取用户列表', permissionCode: 'system:user:list' })
-  @CommonApiResponse({ type: 'list', itemType: UserInfoVo })
+  @CommonApiResponse({ type: 'array', itemType: UserInfoVo })
   findList(@Query(PaginationPipe) queryUserList: UserListDto) {
     return this.userService.findList(queryUserList);
   }

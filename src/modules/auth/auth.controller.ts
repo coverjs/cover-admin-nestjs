@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { AccountLoginDto } from './dto/auth.dto';
@@ -13,8 +13,8 @@ import { User } from '@/common/decorators/user';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('/login')
-  @CommonApiOperation({ summary: '用户登录' })
-  @CommonApiResponse({ isPublic: true, type: AccountLoginVo })
+  @CommonApiOperation({ summary: '用户登录', isPublic: true })
+  @CommonApiResponse({ type: AccountLoginVo })
   login(@Body() accountInfo: AccountLoginDto) {
     return this.authService.login(accountInfo);
   }

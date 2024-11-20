@@ -1,6 +1,6 @@
-import { Controller, Post, Body, Get, Patch, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Param, ParseIntPipe } from '@nestjs/common';
 import { MenuService } from './menu.service';
-import { CreateMenuDto } from './dto/menu.dto';
+import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { MenuVo } from './dto/menu.vo';
@@ -45,8 +45,8 @@ export class MenuController {
   @Patch(':id')
   @CommonApiOperation({ summary: '修改菜单' })
   @CommonApiResponse()
-  update(@Param('id') id: string, @Body() updateMenuDto: CreateMenuDto) {
-    return this.menuService.update(+id, updateMenuDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
+    return this.menuService.update(id, updateMenuDto);
   }
 
   // @Delete(':id')

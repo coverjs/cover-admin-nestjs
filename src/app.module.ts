@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guard';
-import { BaseExceptionsFilter, HttpExeptionsFilter } from './common/exceptions';
+import { ExeptionsFilter } from './common/exceptions';
 import { ResponseInterceptor } from './common/interceptor';
 import { AuthModule } from './modules/auth/auth.module';
 import { PrismaModule } from './common/prisma/prisma.module';
@@ -54,15 +54,11 @@ import { LoggerModule } from 'nestjs-pino';
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor
     },
-    // 注册基本错误过滤器
+
+    // 异常过滤器
     {
       provide: APP_FILTER,
-      useClass: BaseExceptionsFilter
-    },
-    // 注册http错误过滤器
-    {
-      provide: APP_FILTER,
-      useClass: HttpExeptionsFilter
+      useClass: ExeptionsFilter
     }
   ]
 })
