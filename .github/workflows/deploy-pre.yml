@@ -1,7 +1,7 @@
-name: DeployProduction
+name: DeployPre
 on:
   push: # 监听调用时机为push事件
-    branches: ['main']
+    tags: 'pre-*'
 jobs:
   deploy:
     runs-on: ubuntu-latest # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
@@ -52,12 +52,7 @@ jobs:
             cp -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
             rm -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/
             cd /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-            echo "TOKEN_EXPIRES=${{ secrets.TOKEN_EXPIRES }}" >> .env
-            echo "PORT=${{ secrets.PORT }}" >> .env
-            echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
-            echo "NODE_ENV=${{ secrets.NODE_ENV }}"
+            echo "${{ secrets.PRE_ENV }}" > .env
             pnpm install
             npx prisma migrate deploy
             pnpm db:g
