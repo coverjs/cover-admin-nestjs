@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Delete, ParseIntPipe, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Delete, ParseIntPipe, Patch, Param } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -31,7 +31,7 @@ export class RoleController {
   @Delete(':id')
   @CommonApiOperation({ summary: '删除角色', permissionCode: 'system:role:delete' })
   @CommonApiResponse()
-  remove(@Query('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.roleService.removeById(id);
   }
 
@@ -39,7 +39,7 @@ export class RoleController {
   @Patch(':id')
   @CommonApiOperation({ summary: '修改角色', permissionCode: 'system:role:update' })
   @CommonApiResponse()
-  update(@Query('id', ParseIntPipe) id: number, @Body() updateRoleDto: UpdateRoleDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateRoleDto: UpdateRoleDto) {
     return this.roleService.updateById(id, updateRoleDto);
   }
 }
