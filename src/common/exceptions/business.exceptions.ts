@@ -79,4 +79,14 @@ export class BusinessException extends HttpException {
   static throwDemoEnvForbidden() {
     throw new BusinessException(ERROR_CODE.DEMO_ENV_FORBIDDEN);
   }
+
+  // 角色已被使用
+  static throwRoleInUse() {
+    throw new BusinessException(ERROR_CODE.ROLE_IN_USE);
+  }
+
+  // 角色不存在
+  static throwRoleNotExist() {
+    throw new BusinessException(ERROR_CODE.ROLE_NOT_EXIST);
+  }
 }

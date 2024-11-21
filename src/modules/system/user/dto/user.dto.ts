@@ -22,7 +22,9 @@ export class CreateUserDto {
 }
 // 排除password
 export class UserDto extends OmitType(CreateUserDto, ['password'] as const) {}
-// 可选的参数
+
+// 全部转为可选的参数
 export class UserOptionalDto extends PartialType(UserDto) {}
+
 // 合并分页查询参数
 export class UserListDto extends IntersectionType(PaginationDto, UserOptionalDto) {}

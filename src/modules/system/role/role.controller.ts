@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Delete, ParseIntPipe, Patch } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { CreateRoleDto, RoleListDto } from './dto/role.dto';
+import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
@@ -26,5 +26,20 @@ export class RoleController {
   })
   fineList(@Query(PaginationPipe) queryRoleList: RoleListDto) {
     return this.roleService.findList(queryRoleList);
+  }
+
+  @Delete(':id')
+  @CommonApiOperation({ summary: '删除角色', permissionCode: 'system:role:delete' })
+  @CommonApiResponse()
+  remove(@Query('id', ParseIntPipe) id: number) {
+    return this.roleService.removeById(id);
+  }
+
+  // 修改角色
+  @Patch(':id')
+  @CommonApiOperation({ summary: '修改角色', permissionCode: 'system:role:update' })
+  @CommonApiResponse()
+  update(@Query('id', ParseIntPipe) id: number, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.roleService.updateById(id, updateRoleDto);
   }
 }
