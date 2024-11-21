@@ -15,6 +15,7 @@ import { MenuModule } from './modules/system/menu/menu.module';
 import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
 import { IoredisModule } from '@/common/redis/redis.module';
 import { LoggerModule } from 'nestjs-pino';
+import { DemoEnvGuard } from './common/guard/demo-env.guard';
 @Module({
   imports: [
     IoredisModule,
@@ -37,6 +38,10 @@ import { LoggerModule } from 'nestjs-pino';
     UploadModule
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: DemoEnvGuard
+    },
     // jwt 校验守卫
     {
       provide: APP_GUARD,

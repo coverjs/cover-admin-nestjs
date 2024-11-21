@@ -1,6 +1,7 @@
 import { HttpException } from '@nestjs/common';
 import { BusinessError } from './constants';
 import { BUSINESS_ERROR_CODE } from './business.error.code';
+import { ERROR_CODE } from '../error-codes';
 
 /**
  * 自定义业务异常
@@ -72,5 +73,10 @@ export class BusinessException extends HttpException {
    */
   static throwDataProtected() {
     throw new BusinessException(BUSINESS_ERROR_CODE.DATA_PROTECTED);
+  }
+
+  // 演示环境禁止操作
+  static throwDemoEnvForbidden() {
+    throw new BusinessException(ERROR_CODE.DEMO_ENV_FORBIDDEN);
   }
 }
