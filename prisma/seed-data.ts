@@ -1,5 +1,5 @@
 import { NodeType } from '@prisma/client';
-import config from '../config';
+import config from '../src/config';
 
 export const User = [
   {
