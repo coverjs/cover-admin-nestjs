@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Delete, ParseIntPipe, Patch, Param } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { CreateRoleDto, RoleListDto } from './dto/role.dto';
+import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
@@ -28,18 +28,18 @@ export class RoleController {
     return this.roleService.findList(queryRoleList);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.roleService.findOne(+id);
-  // }
+  @Delete(':id')
+  @CommonApiOperation({ summary: '删除角色', permissionCode: 'system:role:delete' })
+  @CommonApiResponse()
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.roleService.removeById(id);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-  //   return this.roleService.update(+id, updateRoleDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.roleService.remove(+id);
-  // }
+  // 修改角色
+  @Patch(':id')
+  @CommonApiOperation({ summary: '修改角色', permissionCode: 'system:role:update' })
+  @CommonApiResponse()
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.roleService.updateById(id, updateRoleDto);
+  }
 }
