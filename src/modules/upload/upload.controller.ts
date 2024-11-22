@@ -26,8 +26,7 @@ export class UploadController {
   @CommonApiResponse({ type: 'string' })
   @UseInterceptors(FileInterceptor('file'))
   upload(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    return '待开发';
+    return this.uploadService.upload(file);
   }
 
   @Post('/files')
