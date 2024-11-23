@@ -1,8 +1,8 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { BusinessException } from './business.exceptions';
-import { BUSINESS_ERROR_CODE } from './business.error.code';
 import { Logger } from 'nestjs-pino';
+import { ERROR_CODE } from '../error-codes';
 
 /**
  * 异常过滤器
@@ -36,8 +36,8 @@ error: ${exception}
     );
     // 其他异常使用通用状态码返回
     respones.status(HttpStatus.OK).send({
-      code: BUSINESS_ERROR_CODE.COMMON.code,
-      msg: BUSINESS_ERROR_CODE.COMMON.msg[(request.headers.lang as string) || 'zh-CN'] // 返回对应语言的异常信息
+      code: ERROR_CODE.COMMON.code,
+      msg: ERROR_CODE.COMMON.msg[(request.headers.lang as string) || 'zh-CN'] // 返回对应语言的异常信息
     });
   }
 }
