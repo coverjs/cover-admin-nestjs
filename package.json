@@ -15,6 +15,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "postinstall": "simple-git-hooks",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -26,6 +27,9 @@
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset",
     "db:deploy": "prisma migrate deploy"
+  },
+  "simple-git-hooks": {
+    "commit-msg": "node ./scripts/verifyCommit.js"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "^2.0.2",
@@ -69,7 +73,9 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
+    "picocolors": "^1.1.1",
     "prettier": "^3.0.0",
+    "simple-git-hooks": "^2.11.1",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.0",
