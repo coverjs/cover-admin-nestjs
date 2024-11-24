@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Query, Response } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UserListDto } from './dto/user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
 import { UserInfoVo } from './dto/user.vo';
@@ -33,9 +33,18 @@ export class UserController {
 
   @Get('export')
   @CommonApiOperation({ summary: '导出用户列表' })
-  @CommonApiResponse()
+  @ApiResponse({
+    content: {
+      'text/plain': {
+        schema: {
+          type: 'string',
+          format: 'binary'
+        }
+      }
+    }
+  })
   async exportJob(@Query(PaginationPipe) queryUserList: UserListDto, @Response() res: Rs) {
-    const { titleName, xlsxData, fileName } = await this.userService.exportJob(queryUserList);
+    const { titleName, xlsxData, fileName } = await this.userService.exportUser(queryUserList);
     const file = await this.xlsxService.exportExcel(titleName, xlsxData, fileName);
     res.setHeader('Content-Type', 'application/vnd.openxmlformats;charset=utf-8');
     res.setHeader('Content-Disposition', 'attachment; filename=' + encodeURIComponent(fileName) + '.xlsx'); // 中文名需要进行url转码

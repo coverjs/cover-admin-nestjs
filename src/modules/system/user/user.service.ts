@@ -56,7 +56,7 @@ export class UserService {
     return res;
   }
 
-  async exportJob(queryUserList: UserListDto) {
+  async exportUser(queryUserList: UserListDto) {
     const nameMap: {
       [key: string]: string;
     } = {
@@ -70,8 +70,8 @@ export class UserService {
       updatedAt: '更新时间'
     }; // 如果需要其他字段自己添加
     const titleName = Object.values(nameMap);
-    const { list } = await this.findList(queryUserList);
-    const xlsxData = list.map((item) => {
+    const data = await this.findList(queryUserList);
+    const xlsxData = data.map((item) => {
       return Object.keys(nameMap).map((key) => {
         if (key === 'role') {
           return item[key].name;
