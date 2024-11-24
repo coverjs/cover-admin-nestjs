@@ -11,6 +11,7 @@ export const loadSwagger = (app: INestApplication) => {
     )
     .setTermsOfService('https://github.com/coverjs')
     .setVersion('1.0.0')
+    .addBearerAuth()
     .build();
 
   const documentFactory = () => {
