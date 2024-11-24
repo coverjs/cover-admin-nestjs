@@ -1,5 +1,4 @@
 import { NodeType } from '@prisma/client';
-import config from '../config';
 
 export const User = [
   {
@@ -15,7 +14,7 @@ export const User = [
 export const Role = [
   {
     id: 1,
-    name: config.adminRole,
+    name: 'admin',
     description: '管理员'
   }
 ];

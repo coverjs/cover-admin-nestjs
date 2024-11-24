@@ -26,7 +26,7 @@ export class UserController {
 
   @Get()
   @CommonApiOperation({ summary: '获取用户列表', permissionCode: 'system:user:list' })
-  @CommonApiResponse({ type: 'list', itemType: UserInfoVo })
+  @CommonApiResponse({ type: 'array', itemType: UserInfoVo })
   findList(@Query(PaginationPipe) queryUserList: UserListDto) {
     return this.userService.findList(queryUserList);
   }

@@ -41,10 +41,7 @@ export class UserService {
       take
     });
 
-    return {
-      list: listData,
-      total: listData.length
-    };
+    return listData;
   }
 
   async findOne(id: number) {

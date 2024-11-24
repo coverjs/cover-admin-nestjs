@@ -1,13 +1,19 @@
-import { applyDecorators } from '@nestjs/common';
-import { ApiOperation, ApiOperationOptions } from '@nestjs/swagger';
+import { applyDecorators, HttpCode } from '@nestjs/common';
+import { ApiHeader, ApiOperation, ApiOperationOptions } from '@nestjs/swagger';
 import { LogicalEnum, PermissionsAuth } from './permissions-auth.decorator';
+import { IsPublic } from './public';
 
 export type CommonApiOperationOptions = ApiOperationOptions & {
   permissionCode?: string | string[];
   permissionLogical?: LogicalEnum;
+  // 是否公开接口，公开接口不校验权限
+  isPublic?: boolean;
 };
 
+// 通用 Api 操作装饰器
 export const CommonApiOperation = (options: CommonApiOperationOptions) => {
+  const { isPublic = false } = options;
+
   const { permissionCode, permissionLogical = LogicalEnum.or, ...apiOperationOptions } = options;
 
   const handlePermissionCode = (permissionCode: string | string[]) => {
@@ -27,8 +33,11 @@ export const CommonApiOperation = (options: CommonApiOperationOptions) => {
     apiOperationOptions.description += `[ 权限码：${handlePermissionCode(permissionCode)} ]`;
   }
   const decorators = [
-    ...(apiOperationOptions ? [ApiOperation(apiOperationOptions)] : []),
-    PermissionsAuth(permissionCode, permissionLogical)
+    IsPublic(isPublic),
+    HttpCode(200),
+    ApiHeader({ name: 'lang', description: '业务异常反馈所使用的语言', enum: ['zh-CN', 'en-US'], example: 'zh-CN' }),
+    PermissionsAuth(permissionCode, permissionLogical),
+    ...(apiOperationOptions ? [ApiOperation(apiOperationOptions)] : [])
   ];
 
   return applyDecorators(...decorators);

@@ -7,7 +7,7 @@ import { handleTree } from '@/utils/format';
 import { UpdateProfileDto, UpdatePasswordDto } from './dto/profile.dto';
 import { encryptPassword } from '@/utils/cryptogram';
 import { BusinessException } from '@/common/exceptions';
-import config from 'config';
+import config from '@/config';
 
 @Injectable()
 export class ProfileService {

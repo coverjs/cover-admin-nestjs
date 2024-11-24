@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import type { Redis } from 'ioredis';
 import { parse } from 'redis-info';
 import { USER_INFO_KEY, USER_TOKEN_KEY, USER_VERSION_KEY } from '../constants';
-import config from 'config';
+import config from '@/config';
 
 @Injectable()
 export class RedisService {

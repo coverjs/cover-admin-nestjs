@@ -7,7 +7,7 @@ import { encryptPassword } from '@/utils/cryptogram';
 import { BusinessException } from '@/common/exceptions';
 import { JWT_SECRET } from '@/common/constants';
 import { RedisService } from '@/common/redis/redis.service';
-import config from 'config';
+import config from '@/config';
 
 @Injectable()
 export class AuthService {
