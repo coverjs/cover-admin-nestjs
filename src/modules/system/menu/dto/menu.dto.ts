@@ -1,5 +1,5 @@
-import type { NodeType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
+import { NodeType } from '@prisma/client';
 
 export class CreateMenuDto {
   @ApiProperty({ description: '名称', required: true, example: '首页' })

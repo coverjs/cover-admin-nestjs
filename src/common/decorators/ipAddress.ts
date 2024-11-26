@@ -1,5 +1,4 @@
-import type { ExecutionContext } from '@nestjs/common';
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import * as requestIp from 'request-ip';
 
 // 获取真实ip
