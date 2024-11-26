@@ -1,15 +1,15 @@
+import { BusinessException } from '@/common/exceptions';
+import { PrismaService } from '@/common/prisma/prisma.service';
+import { RedisService } from '@/common/redis/redis.service';
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
-import { PrismaService } from '@/common/prisma/prisma.service';
-import { BusinessException } from '@/common/exceptions';
-import { RedisService } from '@/common/redis/redis.service';
 
 @Injectable()
 export class RoleService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly redisService: RedisService
-  ) {}
+  ) { }
 
   async create(createRoleDto: CreateRoleDto) {
     const { name } = createRoleDto;
@@ -18,12 +18,13 @@ export class RoleService {
       where: { name }
     });
 
-    if (role) BusinessException.throwRoleNameExist();
+    if (role)
+      BusinessException.throwRoleNameExist();
 
     await this.prismaService.role.create({
       data: {
         ...params,
-        menus: { connect: menuIds.map((id) => ({ id })) }
+        menus: { connect: menuIds.map(id => ({ id })) }
       }
     });
   }
@@ -45,7 +46,8 @@ export class RoleService {
       where: { id }
     });
 
-    if (!role) BusinessException.throwRoleNotExist();
+    if (!role)
+      BusinessException.throwRoleNotExist();
     // 判断当前角色是否有用户使用
     const user = await this.prismaService.user.findFirst({
       where: {
@@ -55,7 +57,8 @@ export class RoleService {
       }
     });
 
-    if (user) BusinessException.throwRoleInUse();
+    if (user)
+      BusinessException.throwRoleInUse();
 
     await this.prismaService.role.delete({
       where: { id }
@@ -68,21 +71,23 @@ export class RoleService {
     const { menuIds, ...params } = updateRoleDto;
 
     const role = await this.prismaService.role.findUnique({ where: { id } });
-    if (!role) BusinessException.throwRoleNotExist();
+    if (!role)
+      BusinessException.throwRoleNotExist();
 
     if (role.name !== name) {
       const oldRole = await this.prismaService.role.findUnique({
         where: { name }
       });
 
-      if (oldRole) BusinessException.throwRoleNameExist();
+      if (oldRole)
+        BusinessException.throwRoleNameExist();
     }
 
     await this.prismaService.role.update({
       where: { id },
       data: {
         ...params,
-        menus: { set: menuIds.map((id) => ({ id })) }
+        menus: { set: menuIds.map(id => ({ id })) }
       }
     });
 
@@ -100,7 +105,7 @@ export class RoleService {
       }
     });
 
-    const promiseArr = users.map((user) => {
+    const promiseArr = users.map(user => {
       return this.redisService.addUserVersion(user.id);
     });
     await Promise.all(promiseArr);

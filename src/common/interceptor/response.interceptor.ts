@@ -10,7 +10,7 @@ export class ResponseInterceptor implements NestInterceptor {
     // const ResponseObj = context.switchToHttp().getResponse();
     // ResponseObj.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
     return next.handle().pipe(
-      map((data) => {
+      map(data => {
         const finalData = filterValue(data);
         return {
           code: 0,

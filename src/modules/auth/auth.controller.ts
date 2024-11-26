@@ -1,17 +1,17 @@
+import { CommonApiResponse } from '@/common/decorators/apiResponse';
+import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { User } from '@/common/decorators/user';
+import { UserInfoByParseToken } from '@/common/dto';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { AccountLoginDto } from './dto/auth.dto';
 import { AccountLoginVo } from './dto/auth.vo';
-import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
-import { UserInfoByParseToken } from '@/common/dto';
-import { User } from '@/common/decorators/user';
 
 @Controller('auth')
 @ApiTags('授权')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
   @Post('/login')
   @CommonApiOperation({ summary: '用户登录', isPublic: true })
   @CommonApiResponse({ type: AccountLoginVo })

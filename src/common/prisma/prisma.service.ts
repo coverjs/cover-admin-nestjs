@@ -41,11 +41,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
   async onModuleInit() {
     try {
-      await this.$connect().then((res) => {
+      await this.$connect().then(res => {
         this.logger.log('数据库连接成功');
         return res;
       });
-    } catch (error) {
+    }
+    catch (error) {
       this.logger.error(error);
     }
   }

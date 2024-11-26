@@ -1,21 +1,23 @@
+import process from 'node:process';
+import { IoredisModule } from '@/common/redis/redis.module';
+import { XlsxModule } from '@/common/xlsx/xlsx.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { JwtAuthGuard } from './common/guard';
-import { ExeptionsFilter } from './common/exceptions';
-import { ResponseInterceptor } from './common/interceptor';
-import { AuthModule } from './modules/auth/auth.module';
-import { PrismaModule } from './common/prisma/prisma.module';
-import { UserModule } from './modules/system/user/user.module';
-import { RoleModule } from './modules/system/role/role.module';
-import { UploadModule } from './modules/upload/upload.module';
-import { ProfileModule } from './modules/profile/profile.module';
-// import { PermisionsGuard } from './common/guard/permission-verify';
-import { MenuModule } from './modules/system/menu/menu.module';
-import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
-import { IoredisModule } from '@/common/redis/redis.module';
 import { LoggerModule } from 'nestjs-pino';
+import { ExeptionsFilter } from './common/exceptions';
+import { JwtAuthGuard } from './common/guard';
 import { DemoEnvGuard } from './common/guard/demo-env.guard';
+import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
+import { ResponseInterceptor } from './common/interceptor';
+import { PrismaModule } from './common/prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { MenuModule } from './modules/system/menu/menu.module';
+import { RoleModule } from './modules/system/role/role.module';
+import { UserModule } from './modules/system/user/user.module';
+import { UploadModule } from './modules/upload/upload.module';
+
 @Module({
   imports: [
     IoredisModule,
@@ -24,6 +26,7 @@ import { DemoEnvGuard } from './common/guard/demo-env.guard';
       pinoHttp: {
         level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
         // timestamp: () => `,"time":"${new Date(Date.now()).toISOString()}"`
+        // eslint-disable-next-line no-undefined
         transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined
       }
     }),
@@ -35,7 +38,8 @@ import { DemoEnvGuard } from './common/guard/demo-env.guard';
     UserModule,
     RoleModule,
     MenuModule,
-    UploadModule
+    UploadModule,
+    XlsxModule
   ],
   providers: [
     {
@@ -67,4 +71,4 @@ import { DemoEnvGuard } from './common/guard/demo-env.guard';
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }

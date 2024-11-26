@@ -1,9 +1,9 @@
-import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import type { INestApplication } from '@nestjs/common';
 import { CommonResponseVo } from '@/common/dto';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 // 加载 swagger 文档
-export const loadSwagger = (app: INestApplication) => {
+export function loadSwagger(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('Cover Admin Service')
     .setDescription(
@@ -11,6 +11,7 @@ export const loadSwagger = (app: INestApplication) => {
     )
     .setTermsOfService('https://github.com/coverjs')
     .setVersion('1.0.0')
+    .addBearerAuth()
     .build();
 
   const documentFactory = () => {
@@ -25,4 +26,4 @@ export const loadSwagger = (app: INestApplication) => {
     });
   };
   SwaggerModule.setup('docs', app, documentFactory);
-};
+}

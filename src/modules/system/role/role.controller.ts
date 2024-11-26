@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Query, Delete, ParseIntPipe, Patch, Param } from '@nestjs/common';
-import { RoleService } from './role.service';
-import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
-import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { PaginationPipe } from '@/common/pipes/pagination.pipe';
-import { RoleVo } from './dto/role.vo';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { PaginationPipe } from '@/common/pipes/pagination.pipe';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
+import { RoleVo } from './dto/role.vo';
+import { RoleService } from './role.service';
+
 @ApiTags('系统管理-角色管理')
 @Controller('system/role')
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService) { }
 
   @Post()
   @CommonApiOperation({ summary: '创建角色', permissionCode: 'system:role:add' })
