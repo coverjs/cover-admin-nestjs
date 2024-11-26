@@ -1,13 +1,13 @@
-import type { PrismaService } from '@/common/prisma/prisma.service';
-import type { RedisService } from '@/common/redis/redis.service';
-import type { ConfigService } from '@nestjs/config';
-import type { JwtService } from '@nestjs/jwt';
-import type { AccountLoginDto } from './dto/auth.dto';
 import { JWT_SECRET } from '@/common/constants';
 import { BusinessException } from '@/common/exceptions';
+import { PrismaService } from '@/common/prisma/prisma.service';
+import { RedisService } from '@/common/redis/redis.service';
 import config from '@/config';
 import { encryptPassword } from '@/utils/cryptogram';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { AccountLoginDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {

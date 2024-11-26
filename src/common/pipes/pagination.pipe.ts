@@ -1,6 +1,5 @@
-import type { PipeTransform } from '@nestjs/common';
-import type { PaginationDto } from '../dto/pagination.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, PipeTransform } from '@nestjs/common';
+import { PaginationDto } from '../dto/pagination.dto';
 
 @Injectable()
 export class PaginationPipe implements PipeTransform {

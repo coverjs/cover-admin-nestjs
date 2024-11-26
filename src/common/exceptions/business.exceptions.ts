@@ -1,6 +1,6 @@
-import type { BusinessError } from './constants';
 import { HttpException } from '@nestjs/common';
 import { ERROR_CODE } from '../error-codes';
+import { BusinessError } from './constants';
 
 /**
  * 自定义业务异常

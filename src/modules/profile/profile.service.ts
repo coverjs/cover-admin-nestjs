@@ -1,20 +1,20 @@
-import type { UserInfoByParseToken } from '@/common/dto';
-import type { PrismaService } from '@/common/prisma/prisma.service';
-import type { MenuVo } from '../system/menu/dto/menu.vo';
-import type { MenuService } from '../system/menu/menu.service';
-import type { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
+import { UserInfoByParseToken } from '@/common/dto';
 import { BusinessException } from '@/common/exceptions';
+import { PrismaService } from '@/common/prisma/prisma.service';
 import config from '@/config';
 import { encryptPassword } from '@/utils/cryptogram';
 import { handleTree } from '@/utils/format';
 import { Injectable } from '@nestjs/common';
+import { MenuVo } from '../system/menu/dto/menu.vo';
+import { MenuService } from '../system/menu/menu.service';
+import { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
 
 @Injectable()
 export class ProfileService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly menuService: MenuService
-  ) {}
+  ) { }
 
   async getUserInfo(user: UserInfoByParseToken) {
     const { password, salt, ...userInfo } = await this.prismaService.user.findUnique({

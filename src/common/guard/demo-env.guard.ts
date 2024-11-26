@@ -1,6 +1,5 @@
-import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import { Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DEMO, NODE_ENV } from '../constants';
 import { BusinessException } from '../exceptions';
 /**
@@ -8,7 +7,7 @@ import { BusinessException } from '../exceptions';
  */
 @Injectable()
 export class DemoEnvGuard implements CanActivate {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isDemoEnvironment = this.configService.get(NODE_ENV) === DEMO;
     if (!isDemoEnvironment)

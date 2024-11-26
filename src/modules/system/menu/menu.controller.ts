@@ -1,15 +1,15 @@
-import type { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
-import type { MenuService } from './menu.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { MenuVo } from './dto/menu.vo';
+import { MenuService } from './menu.service';
 
 @ApiTags('系统管理-菜单管理')
 @Controller('system/menu')
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(private readonly menuService: MenuService) { }
 
   @Post()
   @CommonApiOperation({

@@ -1,19 +1,17 @@
-import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import type { Reflector } from '@nestjs/core';
-import type { PermissionObj } from '../decorators/permissions-auth.decorator';
-import type { UserInfoByParseToken } from '../dto';
-import type { RedisService } from '../redis/redis.service';
-import { Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY, PERMISSION_KEY_METADATA } from '../constants';
-import { LogicalEnum } from '../decorators/permissions-auth.decorator';
+import { LogicalEnum, PermissionObj } from '../decorators/permissions-auth.decorator';
+import { UserInfoByParseToken } from '../dto';
 import { BusinessException } from '../exceptions';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class PermissionAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private redisService: RedisService
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext) {
     const permissionObj = this.reflector.getAllAndOverride<PermissionObj>(PERMISSION_KEY_METADATA, [

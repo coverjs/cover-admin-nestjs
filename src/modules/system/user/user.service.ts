@@ -1,7 +1,7 @@
-import type { PrismaService } from '@/common/prisma/prisma.service';
-import type { CreateUserDto, UserListDto } from './dto/user.dto';
+import { PrismaService } from '@/common/prisma/prisma.service';
 import { encryptPassword, makeSalt } from '@/utils/cryptogram';
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto, UserListDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
