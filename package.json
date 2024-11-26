@@ -84,7 +84,7 @@
     "commit-msg": "npx cover check --commit-msg"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
+    "*.{js,ts}": [
       "eslint --no-warn-ignored --ignore-pattern .gitignore src --fix"
     ]
   },
