@@ -7,7 +7,7 @@ export class UploadService {
   }
 
   findAll() {
-    return `This action returns all upload`;
+    return 'This action returns all upload';
   }
 
   findOne(id: number) {

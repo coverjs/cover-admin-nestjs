@@ -1,10 +1,10 @@
-import { Controller, Post, Body, Get, Patch, Param, ParseIntPipe } from '@nestjs/common';
-import { MenuService } from './menu.service';
-import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
-import { ApiTags } from '@nestjs/swagger';
+import type { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
+import type { MenuService } from './menu.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { MenuVo } from './dto/menu.vo';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { MenuVo } from './dto/menu.vo';
 
 @ApiTags('系统管理-菜单管理')
 @Controller('system/menu')

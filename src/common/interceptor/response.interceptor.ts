@@ -1,6 +1,7 @@
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import type { Observable } from 'rxjs';
 import { filterValue } from '@/utils/format';
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 
 // 包装结果，将请求成功的返回结果格式统一包装起来，放入 data
@@ -10,7 +11,7 @@ export class ResponseInterceptor implements NestInterceptor {
     // const ResponseObj = context.switchToHttp().getResponse();
     // ResponseObj.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
     return next.handle().pipe(
-      map((data) => {
+      map(data => {
         const finalData = filterValue(data);
         return {
           code: 0,

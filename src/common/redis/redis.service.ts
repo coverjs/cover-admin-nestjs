@@ -1,9 +1,9 @@
-import { InjectRedis } from '@nestjs-modules/ioredis';
-import { Injectable } from '@nestjs/common';
 import type { Redis } from 'ioredis';
+import config from '@/config';
+import { Injectable } from '@nestjs/common';
+import { InjectRedis } from '@nestjs-modules/ioredis';
 import { parse } from 'redis-info';
 import { USER_INFO_KEY, USER_TOKEN_KEY, USER_VERSION_KEY } from '../constants';
-import config from '@/config';
 
 @Injectable()
 export class RedisService {

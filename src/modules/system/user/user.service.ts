@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UserListDto } from './dto/user.dto';
-import { PrismaService } from '@/common/prisma/prisma.service';
+import type { PrismaService } from '@/common/prisma/prisma.service';
+import type { CreateUserDto, UserListDto } from './dto/user.dto';
 import { encryptPassword, makeSalt } from '@/utils/cryptogram';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
   async create(createUserDto: CreateUserDto) {
     const { password } = createUserDto;
     const salt = makeSalt();
@@ -31,7 +31,9 @@ export class UserService {
         nickname: {
           contains: nickname
         },
+        // eslint-disable-next-line no-undefined
         roleId: roleId ? Number(roleId) : undefined,
+        // eslint-disable-next-line no-undefined
         enable: enable ? Boolean(enable) : undefined
       },
       include: {
@@ -58,7 +60,7 @@ export class UserService {
 
   async exportUser(queryUserList: UserListDto) {
     const nameMap: {
-      [key: string]: string;
+      [key: string]: string
     } = {
       id: '用户ID',
       username: '用户名',
@@ -71,8 +73,8 @@ export class UserService {
     }; // 如果需要其他字段自己添加
     const titleName = Object.values(nameMap);
     const data = await this.findList(queryUserList);
-    const xlsxData = data.map((item) => {
-      return Object.keys(nameMap).map((key) => {
+    const xlsxData = data.map(item => {
+      return Object.keys(nameMap).map(key => {
         if (key === 'role') {
           return item[key].name;
         }

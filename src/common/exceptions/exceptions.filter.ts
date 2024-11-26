@@ -1,15 +1,16 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
+import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { BusinessException } from './business.exceptions';
-import { Logger } from 'nestjs-pino';
+import type { Logger } from 'nestjs-pino';
+import { Catch, HttpException, HttpStatus } from '@nestjs/common';
 import { ERROR_CODE } from '../error-codes';
+import { BusinessException } from './business.exceptions';
 
 /**
  * 异常过滤器
  */
 @Catch(HttpException, Error)
 export class ExeptionsFilter implements ExceptionFilter {
-  constructor(private readonly logger: Logger) {}
+  constructor(private readonly logger: Logger) { }
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const respones = ctx.getResponse<Response>();
@@ -29,7 +30,7 @@ export class ExeptionsFilter implements ExceptionFilter {
       `
 path: ${request.url}
 method: ${request.method}
-ip:	${request.ip}
+ip: ${request.ip}
 userInfo: ${JSON.stringify((request as any)?.user)}
 error: ${exception}
 `

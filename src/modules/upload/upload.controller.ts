@@ -1,13 +1,13 @@
-import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { UploadService } from './upload.service';
-import { FileInterceptor, FilesInterceptor, FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import type { UploadService } from './upload.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
+import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('文件上传')
 @Controller('upload')
 export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) { }
 
   @Post('/file')
   @ApiOperation({ summary: '单个文件上传接口示例' })
@@ -26,6 +26,7 @@ export class UploadController {
   @CommonApiResponse({ type: 'string' })
   @UseInterceptors(FileInterceptor('file'))
   upload(@UploadedFile() file: Express.Multer.File) {
+    // eslint-disable-next-line no-console
     console.log(file);
     return '待开发';
   }
@@ -50,6 +51,7 @@ export class UploadController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('files'))
   uploads(@UploadedFiles() files: Array<Express.Multer.File>) {
+    // eslint-disable-next-line no-console
     console.log(files);
     return '待开发';
   }
@@ -80,6 +82,7 @@ export class UploadController {
   )
   @ApiConsumes('multipart/form-data')
   uploadMultipleFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    // eslint-disable-next-line no-console
     console.log(files);
     return '待开发';
   }

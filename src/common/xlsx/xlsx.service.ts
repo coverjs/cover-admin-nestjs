@@ -1,9 +1,10 @@
-import xlsx from 'node-xlsx';
+import { Buffer } from 'node:buffer';
 import { Injectable } from '@nestjs/common';
+import xlsx from 'node-xlsx';
 
 @Injectable()
 export class XlsxService {
-  constructor() {}
+  constructor() { }
   /**
    * 导出excel
    * @param titleList 标题
@@ -12,7 +13,6 @@ export class XlsxService {
    */
   public exportExcel(titleList: Array<string>, dataList: string[][], xlsName = 'sheet1'): ArrayBuffer {
     const data = [titleList, ...dataList]; // 其实最后就是把这个数组写入excel
-    // const sheetOptions = { '!cols': [{ wch: 6 }, { wch: 7 }, { wch: 10 }, { wch: 20 }] };
     const buffer = xlsx.build([{ name: xlsName, data, options: {} }]);
     return Buffer.from(buffer);
   }
