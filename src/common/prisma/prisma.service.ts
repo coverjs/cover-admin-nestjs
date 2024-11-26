@@ -1,6 +1,7 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import type { OnModuleInit } from '@nestjs/common';
+import type { Logger } from 'nestjs-pino';
+import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { Logger } from 'nestjs-pino';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -41,11 +42,12 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
   async onModuleInit() {
     try {
-      await this.$connect().then((res) => {
+      await this.$connect().then(res => {
         this.logger.log('数据库连接成功');
         return res;
       });
-    } catch (error) {
+    }
+    catch (error) {
       this.logger.error(error);
     }
   }

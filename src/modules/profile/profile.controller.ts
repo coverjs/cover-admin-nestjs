@@ -1,13 +1,13 @@
-import { Controller, Get, Body, Patch } from '@nestjs/common';
-import { ProfileService } from './profile.service';
-import { User } from '@/common/decorators/user';
-import { ApiTags } from '@nestjs/swagger';
+import type { UserInfoByParseToken } from '@/common/dto';
+import type { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
+import type { ProfileService } from './profile.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { ProfileVo } from './dto/profile.vo';
-import { UpdateProfileDto, UpdatePasswordDto } from './dto/profile.dto';
-import { UserInfoByParseToken } from '@/common/dto';
-import { MenuVo } from '../system/menu/dto/menu.vo';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { User } from '@/common/decorators/user';
+import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { MenuVo } from '../system/menu/dto/menu.vo';
+import { ProfileVo } from './dto/profile.vo';
 
 @Controller('profile')
 @ApiTags('个人信息')

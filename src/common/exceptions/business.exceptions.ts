@@ -1,5 +1,5 @@
+import type { BusinessError } from './constants';
 import { HttpException } from '@nestjs/common';
-import { BusinessError } from './constants';
 import { ERROR_CODE } from '../error-codes';
 
 /**

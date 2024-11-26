@@ -1,11 +1,12 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Reflector } from '@nestjs/core';
+import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import type { ConfigService } from '@nestjs/config';
+import type { Reflector } from '@nestjs/core';
+import type { Logger } from 'nestjs-pino';
+import type { RedisService } from '../redis/redis.service';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET } from '../constants';
 import { BusinessException } from '../exceptions/business.exceptions';
-import { RedisService } from '../redis/redis.service';
-import { Logger } from 'nestjs-pino';
 
 /**
  * jwt全局校验守卫
@@ -39,7 +40,8 @@ export class JwtAuthGuard implements CanActivate {
     ]);
 
     // 公开接口直接通过
-    if (isPublic) return true;
+    if (isPublic)
+      return true;
     // 获取控制器中定义的 httpCode，在守卫中抛出异常时使用
     const httpCode = this.reflector.getAllAndOverride<number>(BUSINESS_HTTP_CODE, [
       context.getHandler(),
@@ -61,17 +63,20 @@ export class JwtAuthGuard implements CanActivate {
         // 用户数据版本号不一致则抛出异常
         const { version } = user;
         const cacheVersion = await this.redisService.getUserVersion(user.id);
-        if (Number(cacheVersion) !== version) BusinessException.throwInvalidToken();
+        if (Number(cacheVersion) !== version)
+          BusinessException.throwInvalidToken();
 
         // 写入对象
         req.user = user;
 
         return true;
-      } catch (err) {
+      }
+      catch (err) {
         this.logger.error(err);
         BusinessException.throwInvalidToken();
       }
-    } else {
+    }
+    else {
       BusinessException.throwInvalidToken();
     }
   }

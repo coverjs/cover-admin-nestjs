@@ -1,5 +1,5 @@
-import { Type } from '@nestjs/common';
-import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
+import type { Type } from '@nestjs/common';
+import type { ApiBodyOptions, ApiParamOptions, ApiQueryOptions } from '@nestjs/swagger';
 
 export type MethodType = 'Post' | 'Get' | 'Delete' | 'Put' | 'Patch';
 
@@ -9,44 +9,44 @@ export interface ResponseOptions {
   /**
    * @summary 响应信息标题
    */
-  title?: string;
+  title?: string
   /**
    * @summary 响应状态码
    */
-  status?: number;
+  status?: number
   /**
    * @summary 响应描述信息
    */
-  description?: string;
+  description?: string
 
   /**
    * @summary 请求路由
    */
-  path?: string | string[];
+  path?: string | string[]
 }
 
 export interface ListResponseOptions extends ResponseOptions {
-  type: Type<any>;
+  type: Type<any>
 }
 
 type SchemaType =
-  | { type?: Type<any>; example?: any }
+  | { type?: Type<any>, example?: any }
   | {
-      type?: 'number';
-      example?: any;
-    }
+    type?: 'number'
+    example?: any
+  }
   | {
-      type?: 'string';
-      example?: any;
-    }
+    type?: 'string'
+    example?: any
+  }
   | { type?: 'boolean' }
   // | { type?: 'object' }
   | {
-      type?: 'array';
-      itemType?: Type<any> | 'string' | 'number';
-      example?: any;
-    }
-  | { type?: 'list'; itemType?: Type<any> | 'string' | 'number' };
+    type?: 'array'
+    itemType?: Type<any> | 'string' | 'number'
+    example?: any
+  }
+  | { type?: 'list', itemType?: Type<any> | 'string' | 'number' };
 
 export type UnityResponseOptions = ResponseOptions & SchemaType;
 
@@ -54,47 +54,47 @@ export interface DefineApiOptions {
   /**
    * @summar 定义该接口的摘要信息
    */
-  summary?: string;
+  summary?: string
 
   /**
    * @summar 定义该接口的描述信息
    */
-  description?: string;
+  description?: string
 
   /**
    * @summary 定义该接口的路由路径
    */
-  path?: string;
+  path?: string
 
   /**
    * @default 200
    * @summar 定义该接口的响应状态码
    */
-  httpCode?: number;
+  httpCode?: number
 
   /**
    * @summar 该接口是否放开
    * @default false
    */
-  isPublic?: boolean;
+  isPublic?: boolean
 
   /**
    * @summary 定义该接口的query数据片段类型
    */
-  query?: ApiQueryOptions;
+  query?: ApiQueryOptions
 
   /**
    * @summar 定义该接口的body体数据片段类型
    */
-  body?: ApiBodyOptions;
+  body?: ApiBodyOptions
 
   /**
    * @summary 定义该接口的param(动态参数)数据片段类型
    */
-  param?: ApiParamOptions;
+  param?: ApiParamOptions
 
   /**
    * @summar 定义该接口的响应数据片段类型
    */
-  response?: Omit<ResponseOptions, 'status'> & SchemaType;
+  response?: Omit<ResponseOptions, 'status'> & SchemaType
 }

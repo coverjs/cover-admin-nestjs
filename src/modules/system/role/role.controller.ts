@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Query, Delete, ParseIntPipe, Patch, Param } from '@nestjs/common';
-import { RoleService } from './role.service';
-import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
-import { ApiTags } from '@nestjs/swagger';
+import type { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
+import type { RoleService } from './role.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { PaginationPipe } from '@/common/pipes/pagination.pipe';
-import { RoleVo } from './dto/role.vo';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { PaginationPipe } from '@/common/pipes/pagination.pipe';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { RoleVo } from './dto/role.vo';
+
 @ApiTags('系统管理-角色管理')
 @Controller('system/role')
 export class RoleController {
