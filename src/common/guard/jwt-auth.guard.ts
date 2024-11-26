@@ -2,10 +2,12 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET } from '../constants';
+import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET, USER_VERSION_KEY, USER_SESSION_ID_KEY } from '../constants';
 import { BusinessException } from '../exceptions/business.exceptions';
-import { RedisService } from '../redis/redis.service';
 import { Logger } from 'nestjs-pino';
+import Redis from 'ioredis';
+import { parseCookie } from '@/utils/common';
+import { ERROR_CODE } from '../error-codes';
 
 /**
  * jwt全局校验守卫
@@ -21,7 +23,7 @@ export class JwtAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly configService: ConfigService,
-    private readonly redisService: RedisService,
+    private readonly redis: Redis,
     private readonly logger: Logger
   ) {}
 
@@ -58,9 +60,15 @@ export class JwtAuthGuard implements CanActivate {
           secret: this.configService.get(JWT_SECRET)
         });
 
-        // 用户数据版本号不一致则抛出异常
+        const sessionId = parseCookie(req.headers.cookie, 'JSESSIONID');
+        const cacheSessionId = await this.redis.get(`${USER_SESSION_ID_KEY}:${user.id}`);
+        if (cacheSessionId !== undefined && cacheSessionId !== null && sessionId !== cacheSessionId) {
+          throw new BusinessException(ERROR_CODE.LOGIN_OTHER_DEVICE);
+        }
+
+        // 用户权限更新会修改用户信息版本，此时需要重新登录刷新权限信息
         const { version } = user;
-        const cacheVersion = await this.redisService.getUserVersion(user.id);
+        const cacheVersion = await this.redis.get(`${USER_VERSION_KEY}:${user.id}`);
         if (Number(cacheVersion) !== version) BusinessException.throwInvalidToken();
 
         // 写入对象
@@ -69,6 +77,9 @@ export class JwtAuthGuard implements CanActivate {
         return true;
       } catch (err) {
         this.logger.error(err);
+        if (err instanceof BusinessException) {
+          throw err;
+        }
         BusinessException.throwInvalidToken();
       }
     } else {

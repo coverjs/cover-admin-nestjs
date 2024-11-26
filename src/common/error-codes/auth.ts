@@ -20,5 +20,13 @@ export const AUTH_ERROR_CODE = {
       'zh-CN': '演示环境,禁止操作',
       'en-US': 'Demo environment, forbidden operation'
     }
+  },
+
+  LOGIN_OTHER_DEVICE: {
+    code: 500,
+    msg: {
+      'zh-CN': '当前账号已在其他设备登录',
+      'en-US': 'The current account has logged in on another device'
+    }
   }
 };
