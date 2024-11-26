@@ -1,18 +1,18 @@
-import type { UserInfoByParseToken } from '@/common/dto';
-import type { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
-import type { ProfileService } from './profile.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 import { User } from '@/common/decorators/user';
+import { UserInfoByParseToken } from '@/common/dto';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { MenuVo } from '../system/menu/dto/menu.vo';
+import { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
 import { ProfileVo } from './dto/profile.vo';
+import { ProfileService } from './profile.service';
 
 @Controller('profile')
 @ApiTags('个人信息')
 export class ProfileController {
-  constructor(private readonly profileService: ProfileService) {}
+  constructor(private readonly profileService: ProfileService) { }
 
   @Get()
   @CommonApiOperation({ summary: '获取当前用户信息' })

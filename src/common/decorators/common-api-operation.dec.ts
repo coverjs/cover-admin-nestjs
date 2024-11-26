@@ -1,6 +1,5 @@
-import type { ApiOperationOptions } from '@nestjs/swagger';
 import { applyDecorators, HttpCode } from '@nestjs/common';
-import { ApiHeader, ApiOperation } from '@nestjs/swagger';
+import { ApiHeader, ApiOperation, ApiOperationOptions } from '@nestjs/swagger';
 import { LogicalEnum, PermissionsAuth } from './permissions-auth.decorator';
 import { IsPublic } from './public';
 

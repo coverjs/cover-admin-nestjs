@@ -1,13 +1,13 @@
-import type { XlsxService } from '@/common/xlsx/xlsx.service';
-import type { Response as Rs } from 'express';
-import type { CreateUserDto, UserListDto } from './dto/user.dto';
-import type { UserService } from './user.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
+import { XlsxService } from '@/common/xlsx/xlsx.service';
 import { Body, Controller, Get, Post, Query, Response } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response as Rs } from 'express';
+import { CreateUserDto, UserListDto } from './dto/user.dto';
 import { UserInfoVo } from './dto/user.vo';
+import { UserService } from './user.service';
 
 @ApiTags('系统管理-用户管理')
 @Controller('system/user')
@@ -15,7 +15,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly xlsxService: XlsxService
-  ) {}
+  ) { }
 
   @Post()
   @CommonApiOperation({ summary: '新建用户', permissionCode: 'system:user:add' })

@@ -1,12 +1,11 @@
-import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import type { Reflector } from '@nestjs/core';
-import type { Logger } from 'nestjs-pino';
-import type { RedisService } from '../redis/redis.service';
-import { Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
+import { Logger } from 'nestjs-pino';
 import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET } from '../constants';
 import { BusinessException } from '../exceptions/business.exceptions';
+import { RedisService } from '../redis/redis.service';
 
 /**
  * jwt全局校验守卫
@@ -24,7 +23,7 @@ export class JwtAuthGuard implements CanActivate {
     private readonly configService: ConfigService,
     private readonly redisService: RedisService,
     private readonly logger: Logger
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext) {
     // 获取request对象

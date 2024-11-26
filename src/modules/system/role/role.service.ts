@@ -1,15 +1,15 @@
-import type { PrismaService } from '@/common/prisma/prisma.service';
-import type { RedisService } from '@/common/redis/redis.service';
-import type { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
 import { BusinessException } from '@/common/exceptions';
+import { PrismaService } from '@/common/prisma/prisma.service';
+import { RedisService } from '@/common/redis/redis.service';
 import { Injectable } from '@nestjs/common';
+import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
 
 @Injectable()
 export class RoleService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly redisService: RedisService
-  ) {}
+  ) { }
 
   async create(createRoleDto: CreateRoleDto) {
     const { name } = createRoleDto;

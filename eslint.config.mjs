@@ -5,6 +5,8 @@ export default linter({
   yaml: false,
   ignores: ['**/dist/**', 'prisma/**/*', 'public', 'tsconfig.*.json', 'tsconfig.json'],
   rules: {
+    // 不强制类型导入
+    'ts/consistent-type-imports': 0,
     // 圈复杂度最大为 15
     'complexity': [2, { max: 15 }],
     // 要求使用 === 而不是 ==

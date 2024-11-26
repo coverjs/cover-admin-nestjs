@@ -1,8 +1,8 @@
-import type { UploadService } from './upload.service';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UploadService } from './upload.service';
 
 @ApiTags('文件上传')
 @Controller('upload')
