@@ -1,13 +1,17 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import process from 'node:process';
 import { Module } from '@nestjs/common';
-import { UploadController } from './upload.controller';
 import { MulterModule } from '@nestjs/platform-express';
-import { UploadService } from './upload.service';
 import * as multer from 'multer';
-import * as fs from 'fs';
-import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { UploadController } from './upload.controller';
+import { UploadService } from './upload.service';
 
-const uploadDir = path.join(process.cwd(), `/src/${process.env.STATIC_UPLOADS_DIRECTORY}`);
+const uploadDir = path.join(
+  process.cwd(),
+  `/src/${process.env.STATIC_UPLOADS_DIRECTORY}`,
+);
 
 @Module({
   imports: [
@@ -18,19 +22,21 @@ const uploadDir = path.join(process.cwd(), `/src/${process.env.STATIC_UPLOADS_DI
             if (!fs.existsSync(uploadDir)) {
               fs.mkdirSync(uploadDir);
             }
-          } catch (e) {
-            console.log(e);
+          }
+          catch (e) {
+            // eslint-disable-next-line no-console
+            console.log('error', e);
           }
           cb(null, uploadDir);
         },
         filename: (req, file, cb) => {
           const uniqueSuffix = `${Date.now()}-${uuidv4()}-${file.originalname}`;
           cb(null, uniqueSuffix);
-        }
-      })
-    })
+        },
+      }),
+    }),
   ],
   controllers: [UploadController],
-  providers: [UploadService]
+  providers: [UploadService],
 })
 export class UploadModule {}

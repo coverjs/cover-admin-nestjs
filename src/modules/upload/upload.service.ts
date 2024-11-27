@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { Injectable } from '@nestjs/common';
 import Config from '../../config/index';
 
@@ -14,7 +15,7 @@ export class UploadService {
   }
 
   uploadFiles(files: Array<Express.Multer.File>) {
-    return files.map((file) => {
+    return files.map(file => {
       return this.uploadFile(file);
     });
   }
