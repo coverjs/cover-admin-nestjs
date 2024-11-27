@@ -1,7 +1,11 @@
 export const JWT_SECRET = 'JWT_SECRET';
 export const TOKEN_EXPIRES = 'TOKEN_EXPIRES';
-
+export const NODE_ENV = 'NODE_ENV';
 export const BUSINESS_HTTP_CODE = 'httpCode';
+
+export const DEMO = 'demo';
+export const DEVOLOPMENT = 'development';
+export const PRODUCTION = 'production';
 
 // 公开的接口 无需登录
 export const IS_PUBLIC_KEY = 'isPublic';

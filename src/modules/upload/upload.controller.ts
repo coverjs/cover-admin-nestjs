@@ -32,7 +32,7 @@ const fileTypeRegex = new RegExp(`\/(${process.env.UPLOAD_ALLOWED_EXTENSIONS})$`
 @ApiTags('文件上传')
 @Controller('upload')
 export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) { }
 
   @Post('/file')
   @ApiOperation({ summary: '单个文件上传接口示例-字段(file)' })

@@ -1,41 +1,42 @@
-import { Controller, Get, Body, Patch } from '@nestjs/common';
-import { ProfileService } from './profile.service';
-import { User } from '@/common/decorators/user';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { ProfileVo } from './dto/profile.vo';
-import { UpdateProfileDto, UpdatePasswordDto } from './dto/profile.dto';
+import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { User } from '@/common/decorators/user';
 import { UserInfoByParseToken } from '@/common/dto';
+import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { MenuVo } from '../system/menu/dto/menu.vo';
+import { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
+import { ProfileVo } from './dto/profile.vo';
+import { ProfileService } from './profile.service';
 
 @Controller('profile')
 @ApiTags('个人信息')
 export class ProfileController {
-  constructor(private readonly profileService: ProfileService) {}
+  constructor(private readonly profileService: ProfileService) { }
 
   @Get()
-  @ApiOperation({ summary: '获取当前用户信息' })
+  @CommonApiOperation({ summary: '获取当前用户信息' })
   @CommonApiResponse({ type: ProfileVo })
   async findUserInfo(@User() user: UserInfoByParseToken) {
     return this.profileService.getUserInfo(user);
   }
 
   @Patch('/update')
-  @ApiOperation({ summary: '修改当前登录用户信息' })
+  @CommonApiOperation({ summary: '修改当前登录用户信息' })
   @CommonApiResponse()
   async updateUserInfo(@User() user: UserInfoByParseToken, @Body() body: UpdateProfileDto) {
     return await this.profileService.updateUserInfo(user, body);
   }
 
   @Patch('/updatePassword')
-  @ApiOperation({ summary: '修改密码' })
+  @CommonApiOperation({ summary: '修改密码' })
   @CommonApiResponse()
   async updatePassword(@User() user: UserInfoByParseToken, @Body() body: UpdatePasswordDto) {
     return await this.profileService.updatePassword(user, body);
   }
 
   @Get('/menus')
-  @ApiOperation({ summary: '获取当前用户菜单' })
+  @CommonApiOperation({ summary: '获取当前用户菜单' })
   @CommonApiResponse({
     type: 'array',
     itemType: MenuVo

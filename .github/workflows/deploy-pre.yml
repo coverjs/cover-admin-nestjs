@@ -1,0 +1,61 @@
+name: DeployPre
+on:
+  push: # 监听调用时机为push事件
+    tags: 'pre-*'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
+    steps:
+      - name: 拉取代码 # 步骤名字
+        uses: actions/checkout@master # 使用 actions/checkout 库拉取最新源码
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: 项目安装依赖
+        run: pnpm install --no-frozen-lockfile
+
+      - name: 项目打包构建
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: |
+          pnpm db:g
+          pnpm build
+
+      - name: 移动产物至到服务器
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: 'dist,prisma,package.json,pnpm-lock.yaml,ecosystem.config.js,tsconfig.json,config'
+          target: '/${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/'
+          rm: true
+
+      - name: 执行远程脚本命令
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            mkdir -p /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
+            rm -rf /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/*
+            cp -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/*  /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
+            rm -rf /${{secrets.SSH_USERNAME}}/Projects/.cover-admin-service_temp/
+            cd /${{secrets.SSH_USERNAME}}/Projects/cover-admin-service/
+            echo "${{ secrets.PRE_ENV }}" > .env
+            pnpm install
+            npx prisma migrate deploy
+            pnpm db:g
+            pm2 restart ./ecosystem.config.js
+
+      - run: echo "部署完成！"

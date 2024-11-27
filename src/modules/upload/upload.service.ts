@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import Config from '../../../config/index';
+import Config from '../../config/index';
 
 @Injectable()
 export class UploadService {

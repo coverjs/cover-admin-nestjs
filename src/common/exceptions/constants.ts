@@ -1,4 +1,4 @@
 export interface BusinessError {
-  code: number;
-  msg: string;
+  code: number
+  msg: Record<string, string>
 }

@@ -1,20 +1,23 @@
+import process from 'node:process';
+import { IoredisModule } from '@/common/redis/redis.module';
+import { XlsxModule } from '@/common/xlsx/xlsx.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { JwtAuthGuard } from './common/guard';
-import { BaseExceptionsFilter, HttpExeptionsFilter } from './common/exceptions';
-import { ResponseInterceptor } from './common/interceptor';
-import { AuthModule } from './modules/auth/auth.module';
-import { PrismaModule } from './common/prisma/prisma.module';
-import { UserModule } from './modules/system/user/user.module';
-import { RoleModule } from './modules/system/role/role.module';
-import { UploadModule } from './modules/upload/upload.module';
-import { ProfileModule } from './modules/profile/profile.module';
-// import { PermisionsGuard } from './common/guard/permission-verify';
-import { MenuModule } from './modules/system/menu/menu.module';
-import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
-import { IoredisModule } from '@/common/redis/redis.module';
 import { LoggerModule } from 'nestjs-pino';
+import { ExeptionsFilter } from './common/exceptions';
+import { JwtAuthGuard } from './common/guard';
+import { DemoEnvGuard } from './common/guard/demo-env.guard';
+import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
+import { ResponseInterceptor } from './common/interceptor';
+import { PrismaModule } from './common/prisma/prisma.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { MenuModule } from './modules/system/menu/menu.module';
+import { RoleModule } from './modules/system/role/role.module';
+import { UserModule } from './modules/system/user/user.module';
+import { UploadModule } from './modules/upload/upload.module';
+
 @Module({
   imports: [
     IoredisModule,
@@ -23,6 +26,7 @@ import { LoggerModule } from 'nestjs-pino';
       pinoHttp: {
         level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
         // timestamp: () => `,"time":"${new Date(Date.now()).toISOString()}"`
+        // eslint-disable-next-line no-undefined
         transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined
       }
     }),
@@ -34,9 +38,14 @@ import { LoggerModule } from 'nestjs-pino';
     UserModule,
     RoleModule,
     MenuModule,
-    UploadModule
+    UploadModule,
+    XlsxModule
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: DemoEnvGuard
+    },
     // jwt 校验守卫
     {
       provide: APP_GUARD,
@@ -54,16 +63,12 @@ import { LoggerModule } from 'nestjs-pino';
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor
     },
-    // 注册基本错误过滤器
+
+    // 异常过滤器
     {
       provide: APP_FILTER,
-      useClass: BaseExceptionsFilter
-    },
-    // 注册http错误过滤器
-    {
-      provide: APP_FILTER,
-      useClass: HttpExeptionsFilter
+      useClass: ExeptionsFilter
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }

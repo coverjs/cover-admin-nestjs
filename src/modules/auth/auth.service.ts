@@ -1,13 +1,13 @@
+import { JWT_SECRET } from '@/common/constants';
+import { BusinessException } from '@/common/exceptions';
+import { PrismaService } from '@/common/prisma/prisma.service';
+import { RedisService } from '@/common/redis/redis.service';
+import config from '@/config';
+import { encryptPassword } from '@/utils/cryptogram';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AccountLoginDto } from './dto/auth.dto';
-import { PrismaService } from '@/common/prisma/prisma.service';
-import { encryptPassword } from '@/utils/cryptogram';
-import { BusinessException } from '@/common/exceptions';
-import { JWT_SECRET } from '@/common/constants';
-import { RedisService } from '@/common/redis/redis.service';
-import config from 'config';
 
 @Injectable()
 export class AuthService {
@@ -16,12 +16,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
     private readonly redisService: RedisService
-  ) {}
+  ) { }
 
   /**
    * 登录
    * @param account
-   * @returns
    */
   async login(account: AccountLoginDto) {
     const { username, password } = account;
@@ -39,12 +38,14 @@ export class AuthService {
     if (userInfo && userInfo.password === encryptPassword(password, userInfo.salt)) {
       const userToken = await this.redisService.getUserToken(userInfo.id);
       // 如果缓存中有token，直接返回token
-      if (userToken) return { token: userToken };
+      if (userToken)
+        return { token: userToken };
 
       const { id, username, role } = userInfo;
       let permissions = [];
-      if (role.name === config.adminRole) permissions = ['*:*:*'];
-      else permissions = userInfo.role.menus.map((item) => item.code);
+      if (role.name === config.adminRole)
+        permissions = ['*:*:*'];
+      else permissions = userInfo.role.menus.map(item => item.code);
 
       const token = this.jwtService.sign(
         { id, username, version: 1 },
