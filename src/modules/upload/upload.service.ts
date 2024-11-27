@@ -3,7 +3,7 @@ import Config from '../../../config/index';
 
 @Injectable()
 export class UploadService {
-  uploadFile(file: Express.Multer.File) {
+  uploadFile(file: Partial<Express.Multer.File>) {
     return {
       fileName: file.filename,
       url: `${Config.staticDomain}:${process.env.PORT}/${process.env.STATIC_UPLOADS_PREFIX}/${file.filename}`,
