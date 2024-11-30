@@ -31,7 +31,6 @@ export class MenuService {
         children: true
       }
     });
-
     return handleTree(data) as MenuVo[];
   }
 
