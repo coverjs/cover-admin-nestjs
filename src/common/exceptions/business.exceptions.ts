@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
-import { BusinessError } from './constants';
 import { ERROR_CODE } from '../error-codes';
+import { BusinessError } from './constants';
 
 /**
  * 自定义业务异常

@@ -2,12 +2,10 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET, USER_VERSION_KEY, USER_SESSION_ID_KEY } from '../constants';
-import { BusinessException } from '../exceptions/business.exceptions';
 import { Logger } from 'nestjs-pino';
-import Redis from 'ioredis';
-import { parseCookie } from '@/utils/common';
-import { ERROR_CODE } from '../error-codes';
+import { BUSINESS_HTTP_CODE, IS_PUBLIC_KEY, JWT_SECRET } from '../constants';
+import { BusinessException } from '../exceptions/business.exceptions';
+import { RedisService } from '../redis/redis.service';
 
 /**
  * jwt全局校验守卫
@@ -23,7 +21,7 @@ export class JwtAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly configService: ConfigService,
-    private readonly redis: Redis,
+    private readonly redisService: RedisService,
     private readonly logger: Logger
   ) {}
 
@@ -41,7 +39,8 @@ export class JwtAuthGuard implements CanActivate {
     ]);
 
     // 公开接口直接通过
-    if (isPublic) return true;
+    if (isPublic)
+      return true;
     // 获取控制器中定义的 httpCode，在守卫中抛出异常时使用
     const httpCode = this.reflector.getAllAndOverride<number>(BUSINESS_HTTP_CODE, [
       context.getHandler(),
@@ -60,29 +59,23 @@ export class JwtAuthGuard implements CanActivate {
           secret: this.configService.get(JWT_SECRET)
         });
 
-        const sessionId = parseCookie(req.headers.cookie, 'JSESSIONID');
-        const cacheSessionId = await this.redis.get(`${USER_SESSION_ID_KEY}:${user.id}`);
-        if (cacheSessionId !== undefined && cacheSessionId !== null && sessionId !== cacheSessionId) {
-          throw new BusinessException(ERROR_CODE.LOGIN_OTHER_DEVICE);
-        }
-
-        // 用户权限更新会修改用户信息版本，此时需要重新登录刷新权限信息
+        // 用户数据版本号不一致则抛出异常
         const { version } = user;
-        const cacheVersion = await this.redis.get(`${USER_VERSION_KEY}:${user.id}`);
-        if (Number(cacheVersion) !== version) BusinessException.throwInvalidToken();
+        const cacheVersion = await this.redisService.getUserVersion(user.id);
+        if (Number(cacheVersion) !== version)
+          BusinessException.throwInvalidToken();
 
         // 写入对象
         req.user = user;
 
         return true;
-      } catch (err) {
+      }
+      catch (err) {
         this.logger.error(err);
-        if (err instanceof BusinessException) {
-          throw err;
-        }
         BusinessException.throwInvalidToken();
       }
-    } else {
+    }
+    else {
       BusinessException.throwInvalidToken();
     }
   }

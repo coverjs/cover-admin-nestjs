@@ -1,3 +1,4 @@
+import process from 'node:process';
 import devConfig from './dev.config';
 import prodConfig from './prod.config';
 
