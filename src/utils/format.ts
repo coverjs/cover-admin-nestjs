@@ -16,18 +16,18 @@ export function handleTree(data: any[], id?: string, parentId?: string, children
   const nodeIds = {};
   const tree = [];
 
-  for (const d of data) {
-    const parentId = d[config.parentId];
-    if (childrenListMap[parentId] === null) {
+  for (const item of data) {
+    const parentId = item[config.parentId];
+    if (!childrenListMap[parentId]) {
       childrenListMap[parentId] = [];
     }
-    nodeIds[d[config.id]] = d;
-    childrenListMap[parentId].push(d);
+    nodeIds[item[config.id]] = item;
+    childrenListMap[parentId].push(item);
   }
 
   for (const d of data) {
     const parentId = d[config.parentId];
-    if (nodeIds[parentId] === null) {
+    if (!nodeIds[parentId]) {
       tree.push(d);
     }
   }
@@ -37,7 +37,7 @@ export function handleTree(data: any[], id?: string, parentId?: string, children
   }
 
   function adaptToChildrenList(o) {
-    if (childrenListMap[o[config.id]] !== null) {
+    if (childrenListMap[o[config.id]]) {
       o[config.childrenList] = childrenListMap[o[config.id]];
     }
     if (o[config.childrenList]) {
