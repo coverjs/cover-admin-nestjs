@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+	<script src="//cdn.rawgit.com/satazor/SparkMD5/master/spark-md5.min.js"></script>
+	<script crossorigin="anonymous"
+		integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ=="
+		src="https://lib.baomitu.com/uuid/8.3.2/uuid.min.js"></script>
+</head>
+
+<body>
+	<input id="fileInput" type="file" />
+	<button onclick="mergeChunks()">合并</button>
+	<script>
+		function guid() {
+			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+				var r = Math.random() * 16 | 0,
+					v = c == 'x' ? r : (r & 0x3 | 0x8);
+				return v.toString(16);
+			});
+		}
+		const fileInput = document.querySelector('#fileInput');
+
+		const chunkSize = 40 * 1024;
+
+		fileInput.onchange = async function () {
+
+			const file = fileInput.files[0];
+
+			const chunks = [];
+			let startPos = 0;
+			while (startPos < file.size) {
+				chunks.push(file.slice(startPos, startPos + chunkSize));
+				startPos += chunkSize;
+			}
+
+			const spark = new SparkMD5.ArrayBuffer()
+
+			chunks.map((chunk, index) => {
+				const data = new FormData();
+				spark.append(chunk);
+				data.set('name', file.name)
+				data.set('hash', spark.end())
+				data.append('file', chunk);
+				axios.post('http://localhost:3000/upload/chunks', data);
+			})
+
+		}
+
+		function mergeChunks() {
+			axios.get('http://localhost:3000/upload/merge', {
+				params: {
+					fileName: 'bg.jpg',
+					hash: '2f1e861d563b5782f9dcd23ac8b98a38'
+				}
+			})
+		}
+	</script>
+</body>
+
+</html>

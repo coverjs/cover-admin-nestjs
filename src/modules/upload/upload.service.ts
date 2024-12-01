@@ -1,24 +1,29 @@
+import process from 'node:process';
 import { Injectable } from '@nestjs/common';
+import Config from '../../config/index';
 
 @Injectable()
 export class UploadService {
-  create() {
-    return 'This action adds a new upload';
+  uploadFile(file: Partial<Express.Multer.File>) {
+    return {
+      fileName: file.filename,
+      url: `${Config.staticDomain}:${process.env.PORT}/${process.env.STATIC_UPLOADS_PREFIX}/${file.filename}`,
+      size: file.size,
+      type: file.mimetype,
+      originalname: file.originalname
+    };
   }
 
-  findAll() {
-    return 'This action returns all upload';
+  uploadFiles(files: Array<Express.Multer.File>) {
+    return files.map(file => {
+      return this.uploadFile(file);
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} upload`;
-  }
-
-  update(id: number) {
-    return `This action updates a #${id} upload`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} upload`;
+  uploadsFields(files: Record<string, Array<Express.Multer.File>>) {
+    return Object.keys(files).reduce((acc, key) => {
+      acc[key] = this.uploadFiles(files[key]);
+      return acc;
+    }, {});
   }
 }

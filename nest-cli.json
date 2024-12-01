@@ -5,6 +5,17 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "builder": "swc",
-    "typeCheck": true
+    "typeCheck": true,
+    "watchAssets": true,
+		"assets": [
+      {
+        "include": "public/**/*",
+        "outDir": "dist"
+      },
+			{
+        "include": "uploads/**/*",
+        "outDir": "dist"
+      }
+    ]
   }
 }
