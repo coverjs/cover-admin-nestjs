@@ -1,5 +1,5 @@
-import type { INestApplication } from '@nestjs/common';
 import { CommonResponseVo } from '@/common/dto';
+import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 // 加载 swagger 文档

@@ -1,10 +1,13 @@
 {
-  "name": "cover-admin-service",
+  "name": "cover-admin-nestjs",
   "version": "0.0.1",
-  "private": true,
   "description": "",
-  "author": "",
-  "license": "UNLICENSED",
+  "author": {
+    "name": "hacxy",
+    "email": "hacxy.js@outlook.com",
+    "url": "https://github.com/hacxy"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "nest start --watch",
     "build": "prisma generate && nest build",
