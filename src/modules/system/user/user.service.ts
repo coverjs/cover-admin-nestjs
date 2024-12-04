@@ -21,6 +21,16 @@ export class UserService {
   async findList(queryUserList: UserListDto) {
     const { skip, take, username, email, nickname, enable, roleId } = queryUserList;
     const listData = await this.prismaService.user.findMany({
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        enable: true,
+        nickname: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true
+      },
       where: {
         username: {
           contains: username
@@ -35,9 +45,6 @@ export class UserService {
         roleId: roleId ? Number(roleId) : undefined,
         // eslint-disable-next-line no-undefined
         enable: enable ? Boolean(enable) : undefined
-      },
-      include: {
-        role: true
       },
       skip,
       take
