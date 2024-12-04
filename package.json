@@ -16,7 +16,7 @@
     "debug": "nest start --debug --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint --no-ignore --ignore-pattern .gitignore src --fix",
+    "lint": "eslint src --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -57,7 +57,7 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.9.2",
+    "@lakyjs/eslint-config": "^0.0.1",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/schematics": "^10.0.0",
