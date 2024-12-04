@@ -16,7 +16,7 @@
     "debug": "nest start --debug --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint src --fix",
+    "lint": "eslint . --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -69,9 +69,9 @@
     "@types/multer": "^1.4.11",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
-    "cover-cli": "^0.3.0",
     "eslint": "^9.15.0",
     "jest": "^29.5.0",
+    "laky": "^0.3.3",
     "lint-staged": "^15.2.10",
     "simple-git-hooks": "^2.11.1",
     "source-map-support": "^0.5.21",
@@ -84,11 +84,11 @@
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged",
-    "commit-msg": "npx cover check --commit-msg"
+    "commit-msg": "npx laky check --commit-msg"
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint src --fix"
+      "eslint . --fix"
     ]
   },
   "jest": {
