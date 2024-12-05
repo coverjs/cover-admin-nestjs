@@ -22,7 +22,7 @@ export class RoleController {
   @Get()
   @CommonApiOperation({ summary: '获取角色列表', permissionCode: 'system:role:list' })
   @CommonApiResponse({
-    type: 'array',
+    type: 'list',
     itemType: RoleVo
   })
   fineList(@Query(PaginationPipe) queryRoleList: RoleListDto) {

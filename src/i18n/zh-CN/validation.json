@@ -1,0 +1,9 @@
+{
+  "not_defined": "字段 {property} 不能为空",
+  "not_empty": "字段 {property} 不能为空",
+  "invalid_email": "无效的 email",
+  "invalid_boolean": "字段 {property} 需要是 boolean 类型",
+  "min": "字段 {property} 长度必须大于等于{constraints.0}",
+  "max": "字段 {property} 长度需要小于等于{constraints.0}",
+  "field": "字段 {field} 类型错误, 预期类型为: {type}"
+}

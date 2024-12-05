@@ -4,10 +4,10 @@ import { PaginationDto } from '../dto/pagination.dto';
 @Injectable()
 export class PaginationPipe implements PipeTransform {
   transform(data: PaginationDto) {
-    // eslint-disable-next-line no-undefined
-    data.skip = data.pageNum ? (data.pageNum - 1) * data.pageSize : undefined;
-    // eslint-disable-next-line no-undefined
-    data.take = data.pageSize ? +data.pageSize : undefined;
+    const pageNum = data.pageNum || 1;
+    const pageSize = data.pageSize || 10;
+    data.skip = (+pageNum - 1) * pageSize;
+    data.take = +pageSize;
     return data;
   }
 }

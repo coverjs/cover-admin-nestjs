@@ -1,7 +1,9 @@
 import { BusinessException } from '@/common/exceptions';
 import { PrismaService } from '@/common/prisma/prisma.service';
 import { RedisService } from '@/common/redis/redis.service';
+import { findListData } from '@/utils/common';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
 
 @Injectable()
@@ -31,13 +33,11 @@ export class RoleService {
 
   async findList(queryRoleList: RoleListDto) {
     const { skip, take, name } = queryRoleList;
-    const list = await this.prismaService.role.findMany({
+    return await findListData<Prisma.RoleFindManyArgs>(this.prismaService.role, {
       where: { name: { contains: name } },
       skip,
       take
     });
-
-    return list;
   }
 
   // 删除角色

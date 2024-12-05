@@ -1,9 +1,11 @@
+import path from 'node:path';
 import process from 'node:process';
 import { IoredisModule } from '@/common/redis/redis.module';
 import { XlsxModule } from '@/common/xlsx/xlsx.module';
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { AcceptLanguageResolver, HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { LoggerModule } from 'nestjs-pino';
 import { ExeptionsFilter } from './common/exceptions';
 import { JwtAuthGuard } from './common/guard';
@@ -20,6 +22,20 @@ import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
+    // 国际化
+    I18nModule.forRoot({
+      fallbackLanguage: 'zh-CN',
+      loaderOptions: {
+        path: path.join(__dirname, '/i18n/'),
+        watch: true
+      },
+      typesOutputPath: path.join(__dirname, '../src/common/types/i18n.ts'),
+      resolvers: [
+        { use: HeaderResolver, options: ['lang'] },
+        AcceptLanguageResolver,
+      ],
+    }),
+    // redis
     IoredisModule,
     // 日志模块
     LoggerModule.forRoot({
@@ -42,6 +58,7 @@ import { UploadModule } from './modules/upload/upload.module';
     XlsxModule
   ],
   providers: [
+
     {
       provide: APP_GUARD,
       useClass: DemoEnvGuard
@@ -56,6 +73,11 @@ import { UploadModule } from './modules/upload/upload.module';
     {
       provide: APP_GUARD,
       useClass: PermissionAuthGuard
+    },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true })
+
     },
 
     // 统一响应格式

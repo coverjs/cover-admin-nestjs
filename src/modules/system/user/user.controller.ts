@@ -15,7 +15,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly xlsxService: XlsxService
-  ) { }
+  ) {}
 
   @Post()
   @CommonApiOperation({ summary: '新建用户', permissionCode: 'system:user:add' })
@@ -26,13 +26,13 @@ export class UserController {
 
   @Get()
   @CommonApiOperation({ summary: '获取用户列表', permissionCode: 'system:user:list' })
-  @CommonApiResponse({ type: 'array', itemType: UserInfoVo })
+  @CommonApiResponse({ type: 'list', itemType: UserInfoVo })
   findList(@Query(PaginationPipe) queryUserList: UserListDto) {
     return this.userService.findList(queryUserList);
   }
 
   @Get('export')
-  @CommonApiOperation({ summary: '导出用户列表' })
+  @CommonApiOperation({ summary: '导出用户列表', permissionCode: 'system:user:export' })
   @ApiResponse({
     content: {
       'text/plain': {
