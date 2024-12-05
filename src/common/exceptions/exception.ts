@@ -1,5 +1,5 @@
-import { ArgumentMetadata, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
-import { I18nService, Path } from 'nestjs-i18n';
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { Path } from 'nestjs-i18n';
 import { I18nTranslations } from '../types/i18n';
 
 interface ExceptionOptions {
@@ -41,14 +41,5 @@ export class Exception extends HttpException {
       code: HttpStatus.UNAUTHORIZED,
       msg: 'error.auth.invalid_token'
     });
-  }
-
-  /**
-   * 字段类型校验错误
-   */
-  static throwFieldTypeError(metadata: ArgumentMetadata, i18n: I18nService) {
-    const field = metadata.data;
-    const type = metadata.metatype.name.toLowerCase();
-    throw new BadRequestException(`${i18n.t('error.verify.field')} ${field} ${i18n.t('error.verify.error')}, ${i18n.t('error.verify.type')}: ${type}`);
   }
 }

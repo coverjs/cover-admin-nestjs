@@ -58,10 +58,7 @@ import { UploadModule } from './modules/upload/upload.module';
     XlsxModule
   ],
   providers: [
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe
-    },
+
     {
       provide: APP_GUARD,
       useClass: DemoEnvGuard
@@ -76,6 +73,11 @@ import { UploadModule } from './modules/upload/upload.module';
     {
       provide: APP_GUARD,
       useClass: PermissionAuthGuard
+    },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true })
+
     },
 
     // 统一响应格式

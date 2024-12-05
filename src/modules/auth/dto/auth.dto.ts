@@ -1,12 +1,15 @@
+import { vali } from '@/utils/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsDefined, Matches } from 'class-validator';
 
 export class AccountLoginDto {
-  @IsNotEmpty({ message: 'error.user.username_cannot_be_empty' })
-  @ApiProperty({ description: '账号', example: 'admin' })
+  @IsDefined(vali('validation.not_defined'))
+  @Matches(/^\w{5,12}$/, vali('exception.user.username_is_invalid'))
+  @ApiProperty({ description: '账号', pattern: /^\w{5,12}$/.source })
   username: string;
 
-  @IsNotEmpty({ message: 'error.user.password_cannot_be_empty' })
-  @ApiProperty({ description: '密码', example: 'admin' })
+  @IsDefined(vali('validation.not_defined'))
+  @Matches(/^[\w.]{5,16}$/, vali('exception.user.password_is_invalid'))
+  @ApiProperty({ description: '密码', pattern: /^[\w.]{5,16}$/.source })
   password: string;
 }

@@ -1,0 +1,9 @@
+{
+  "not_defined": "field {property} cannot be empty",
+  "not_empty": "field {property} cannot be empty",
+  "invalid_email": "email is invalid",
+  "invalid_boolean": "field {property} is not a boolean",
+  "min": "field {property} needs to be at least{constraints.0}",
+  "max": "field {property} needs to be less than{constraints.0}",
+  "field": "Field {field} has an incorrect type, expected type: {type}"
+}

@@ -1,15 +1,24 @@
+import { BusinessException } from '@/common/exceptions';
 import { PrismaService } from '@/common/prisma/prisma.service';
+import { findListData } from '@/utils/common';
 import { encryptPassword, makeSalt } from '@/utils/cryptogram';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { CreateUserDto, UserListDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) { }
+
+  // 新建用户
   async create(createUserDto: CreateUserDto) {
-    const { password } = createUserDto;
+    const { password, username } = createUserDto;
     const salt = makeSalt();
     createUserDto.password = encryptPassword(password, salt);
+    const user = await this.prismaService.user.findUnique({ where: { username } });
+    if (user) {
+      BusinessException.throwError('exception.user.username_already_exists');
+    }
     await this.prismaService.user.create({
       data: {
         salt,
@@ -20,7 +29,8 @@ export class UserService {
 
   async findList(queryUserList: UserListDto) {
     const { skip, take, username, email, nickname, enable, roleId } = queryUserList;
-    const listData = await this.prismaService.user.findMany({
+
+    return await findListData<Prisma.UserFindManyArgs>(this.prismaService.user, {
       where: {
         username: {
           contains: username
@@ -34,32 +44,10 @@ export class UserService {
         roleId,
         enable
       },
-      include: {
-        role: true
-      },
+      include: { role: true },
       skip,
       take
-    });
-
-    const total = await this.prismaService.user.count({
-      where: {
-        username: {
-          contains: username
-        },
-        email: {
-          contains: email
-        },
-        nickname: {
-          contains: nickname
-        },
-        roleId,
-        enable
-      },
-    });
-    return {
-      list: listData.map(({ password, salt, ...res }) => res),
-      total
-    };
+    }, ['password', 'salt']);
   }
 
   async findOne(id: number) {
