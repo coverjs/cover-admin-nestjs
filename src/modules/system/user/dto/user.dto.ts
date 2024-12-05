@@ -27,4 +27,5 @@ export class UserDto extends OmitType(CreateUserDto, ['password'] as const) {}
 export class UserOptionalDto extends PartialType(UserDto) {}
 
 // 合并分页查询参数
-export class UserListDto extends IntersectionType(PaginationDto, UserOptionalDto) {}
+export class UserListDto extends IntersectionType(PaginationDto, UserOptionalDto) {
+}
