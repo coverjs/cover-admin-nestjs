@@ -1,5 +1,5 @@
 import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { I18nContext, Path } from 'nestjs-i18n';
 import { Logger } from 'nestjs-pino';
 import { I18nTranslations } from '../types/i18n';
@@ -16,7 +16,7 @@ export class ExeptionsFilter implements ExceptionFilter {
     const i18n = I18nContext.current(host);
     const ctx = host.switchToHttp();
     const respones = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    // const request = ctx.getRequest<Request>();
 
     // 处理自定义业务异常
     if (exception instanceof BusinessException) {
@@ -47,14 +47,7 @@ export class ExeptionsFilter implements ExceptionFilter {
       return;
     }
 
-    this.logger.error(
-      `
-    path: ${request.url}
-    method: ${request.method}
-    ip: ${request.ip}
-    userInfo: ${JSON.stringify((request as any)?.user)}
-    error: ${JSON.stringify(exception)}`
-    );
+    this.logger.error(exception);
 
     // 其他异常使用通用状态码返回
     respones.status(HttpStatus.OK).send({

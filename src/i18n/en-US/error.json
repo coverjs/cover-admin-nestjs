@@ -20,8 +20,6 @@
   },
   "profile": {
     "old_password_incorrect": "密码验证错误"
-  },
-  "verify": {
-    "field": "Field {field} has an incorrect type, expected type: {type}"
   }
+
 }

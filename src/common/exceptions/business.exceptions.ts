@@ -1,4 +1,4 @@
-import { ArgumentMetadata, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 import { Path, TranslateOptions } from 'nestjs-i18n';
 import { I18nTranslations } from '../types/i18n';
 import { BusinessError } from './constants';
@@ -84,19 +84,5 @@ export class BusinessException extends HttpException {
   // 角色不存在
   static throwRoleNotExist() {
     throw new BadRequestException('error.role.role_not_exist');
-  }
-
-  /**
-   * 字段类型校验错误
-   */
-  static throwFieldTypeError(metadata: ArgumentMetadata) {
-    const field = metadata.data;
-    const type = metadata.metatype.name.toLowerCase();
-    BusinessException.throwError('error.verify.field', {
-      args: {
-        field,
-        type
-      }
-    });
   }
 }
