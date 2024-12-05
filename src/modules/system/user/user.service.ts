@@ -21,16 +21,6 @@ export class UserService {
   async findList(queryUserList: UserListDto) {
     const { skip, take, username, email, nickname, enable, roleId } = queryUserList;
     const listData = await this.prismaService.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        enable: true,
-        nickname: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true
-      },
       where: {
         username: {
           contains: username
@@ -41,16 +31,35 @@ export class UserService {
         nickname: {
           contains: nickname
         },
-        // eslint-disable-next-line no-undefined
-        roleId: roleId ? Number(roleId) : undefined,
-        // eslint-disable-next-line no-undefined
-        enable: enable ? Boolean(enable) : undefined
+        roleId,
+        enable
+      },
+      include: {
+        role: true
       },
       skip,
       take
     });
 
-    return listData;
+    const total = await this.prismaService.user.count({
+      where: {
+        username: {
+          contains: username
+        },
+        email: {
+          contains: email
+        },
+        nickname: {
+          contains: nickname
+        },
+        roleId,
+        enable
+      },
+    });
+    return {
+      list: listData.map(({ password, salt, ...res }) => res),
+      total
+    };
   }
 
   async findOne(id: number) {
@@ -80,7 +89,7 @@ export class UserService {
     }; // 如果需要其他字段自己添加
     const titleName = Object.values(nameMap);
     const data = await this.findList(queryUserList);
-    const xlsxData = data.map(item => {
+    const xlsxData = data.list.map(item => {
       return Object.keys(nameMap).map(key => {
         if (key === 'role') {
           return item[key].name;

@@ -1,6 +1,8 @@
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
+import { ParseBoolPipe } from '@/common/pipes/parse-bool.pipe';
+import { ParseNumPipe } from '@/common/pipes/parse-num.pipe';
 import { XlsxService } from '@/common/xlsx/xlsx.service';
 import { Body, Controller, Get, Post, Query, Response } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -26,13 +28,17 @@ export class UserController {
 
   @Get()
   @CommonApiOperation({ summary: '获取用户列表', permissionCode: 'system:user:list' })
-  @CommonApiResponse({ type: 'array', itemType: UserInfoVo })
-  findList(@Query(PaginationPipe) queryUserList: UserListDto) {
-    return this.userService.findList(queryUserList);
+  @CommonApiResponse({ type: 'list', itemType: UserInfoVo })
+  findList(
+    @Query(PaginationPipe) queryUserList: UserListDto,
+    @Query('roleId', ParseNumPipe()) roleId: number,
+    @Query('enable', ParseBoolPipe()) enable: boolean
+  ) {
+    return this.userService.findList({ ...queryUserList, roleId, enable });
   }
 
   @Get('export')
-  @CommonApiOperation({ summary: '导出用户列表' })
+  @CommonApiOperation({ summary: '导出用户列表', permissionCode: 'system:user:export' })
   @ApiResponse({
     content: {
       'text/plain': {

@@ -35,7 +35,7 @@ export class AuthService {
       }
     });
 
-    if (userInfo && userInfo.password === encryptPassword(password, userInfo.salt)) {
+    if (userInfo && userInfo?.password === encryptPassword(password, userInfo.salt)) {
       const userToken = await this.redisService.getUserToken(userInfo.id);
       // 如果缓存中有token，直接返回token
       if (userToken)
