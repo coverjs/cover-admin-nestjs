@@ -17,22 +17,22 @@ export class ProfileController {
   @Get()
   @CommonApiOperation({ summary: '获取当前用户信息' })
   @CommonApiResponse({ type: ProfileVo })
-  async findUserInfo(@User() user: UserInfoByParseToken) {
-    return this.profileService.getUserInfo(user);
+  async getInfo(@User() user: UserInfoByParseToken) {
+    return this.profileService.getProfileInfo(user);
   }
 
   @Patch('/update')
   @CommonApiOperation({ summary: '修改当前登录用户信息' })
   @CommonApiResponse()
-  async updateUserInfo(@User() user: UserInfoByParseToken, @Body() body: UpdateProfileDto) {
-    return await this.profileService.updateUserInfo(user, body);
+  async updateInfo(@User() user: UserInfoByParseToken, @Body() body: UpdateProfileDto) {
+    return await this.profileService.updateProfileInfo(user, body);
   }
 
   @Patch('/updatePassword')
   @CommonApiOperation({ summary: '修改密码' })
   @CommonApiResponse()
   async updatePassword(@User() user: UserInfoByParseToken, @Body() body: UpdatePasswordDto) {
-    return await this.profileService.updatePassword(user, body);
+    return await this.profileService.updateProfilePassword(user, body);
   }
 
   @Get('/menus')
@@ -42,6 +42,6 @@ export class ProfileController {
     itemType: MenuVo
   })
   async getMenus(@User() user: UserInfoByParseToken) {
-    return await this.profileService.getUserMenus(user.id);
+    return await this.profileService.getProfileMenus(user.id);
   }
 }

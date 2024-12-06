@@ -24,17 +24,16 @@ export class MenuController {
 
   @Get()
   @CommonApiOperation({
-    summary: '查询菜单列表',
+    summary: '获取菜单列表',
     description: '获取菜单列表数据',
     permissionCode: 'system:menu:list'
   })
   @CommonApiResponse({
-    type: 'array',
+    type: 'list',
     itemType: MenuVo
   })
   async findList() {
-    const list = await this.menuService.findList();
-    return list;
+    return await this.menuService.findList();
   }
 
   // @Get(':id')
@@ -43,7 +42,7 @@ export class MenuController {
   // }
 
   @Patch(':id')
-  @CommonApiOperation({ summary: '修改菜单' })
+  @CommonApiOperation({ summary: '修改菜单', permissionCode: 'system:menu:update' })
   @CommonApiResponse()
   update(@Param('id', ParseIntPipe) id: number, @Body() updateMenuDto: UpdateMenuDto) {
     return this.menuService.update(id, updateMenuDto);

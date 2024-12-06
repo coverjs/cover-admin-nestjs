@@ -6,17 +6,13 @@ import { encryptPassword } from '@/utils/cryptogram';
 import { handleTree } from '@/utils/format';
 import { Injectable } from '@nestjs/common';
 import { MenuVo } from '../system/menu/dto/menu.vo';
-import { MenuService } from '../system/menu/menu.service';
 import { UpdatePasswordDto, UpdateProfileDto } from './dto/profile.dto';
 
 @Injectable()
 export class ProfileService {
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly menuService: MenuService
-  ) { }
-
-  async getUserInfo(user: UserInfoByParseToken) {
+  constructor(private readonly prismaService: PrismaService) {}
+  // 获取个人信息
+  async getProfileInfo(user: UserInfoByParseToken) {
     const { password, salt, ...userInfo } = await this.prismaService.user.findUnique({
       where: {
         id: user.id
@@ -28,7 +24,7 @@ export class ProfileService {
     return userInfo;
   }
 
-  async getUserMenus(userId: number): Promise<MenuVo[]> {
+  async getProfileMenus(userId: number): Promise<MenuVo[]> {
     const roleInfo = await this.prismaService.user.findUnique({
       select: {
         role: {
@@ -46,7 +42,8 @@ export class ProfileService {
       }
     });
     if (roleInfo.role.name === config.adminRole) {
-      return await this.menuService.findList();
+      const menus = await this.prismaService.menu.findMany();
+      return handleTree(menus);
     }
     else {
       return handleTree(roleInfo.role.menus);
@@ -54,7 +51,7 @@ export class ProfileService {
   }
 
   // 更新个人中心用户信息
-  async updateUserInfo(user: UserInfoByParseToken, info: UpdateProfileDto) {
+  async updateProfileInfo(user: UserInfoByParseToken, info: UpdateProfileDto) {
     await this.prismaService.user.update({
       where: {
         id: user.id
@@ -64,7 +61,7 @@ export class ProfileService {
   }
 
   // 重置密码
-  async updatePassword(user: UserInfoByParseToken, info: UpdatePasswordDto) {
+  async updateProfilePassword(user: UserInfoByParseToken, info: UpdatePasswordDto) {
     const userInfo = await this.prismaService.user.findUnique({
       where: { id: user.id }
     });
