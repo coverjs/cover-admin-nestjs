@@ -1,16 +1,18 @@
 import { PaginationDto } from '@/common/dto';
 import { AccountLoginDto } from '@/modules/auth/dto/auth.dto';
 import { ParseBoolean, ParseInt, vali } from '@/utils/common';
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, OmitType, PartialType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsDefined, IsEmail } from 'class-validator';
+import { IsBoolean, IsDefined, IsEmail, IsOptional } from 'class-validator';
 
-export class CreateUserDto extends AccountLoginDto {
+export class UpdateUserDto {
+  @IsDefined(vali('validation.not_empty'))
   @ApiProperty({ description: '昵称', maxLength: 6, minLength: 2 })
-  nickname?: string;
+  nickname: string;
 
   @ApiProperty({ description: '邮箱', required: false })
   @IsEmail({}, vali('validation.invalid_email'))
+  @IsOptional()
   email?: string;
 
   @Transform(ParseInt)
@@ -21,8 +23,11 @@ export class CreateUserDto extends AccountLoginDto {
   @Transform(ParseBoolean)
   @IsBoolean(vali('validation.invalid_boolean'))
   @ApiProperty({ description: '是否启用' })
-  enable?: boolean;
+  enable: boolean;
 }
+
+export class CreateUserDto extends IntersectionType(AccountLoginDto, UpdateUserDto) {}
+
 // 排除password
 export class UserDto extends OmitType(CreateUserDto, ['password'] as const) {}
 
@@ -31,20 +36,20 @@ export class UserOptionalDto extends PartialType(UserDto) {}
 
 // 合并分页查询参数
 export class UserListDto extends PaginationDto {
-  @ApiProperty({ description: '用户名称' })
+  @ApiProperty({ description: '用户名称', required: false })
   username?: string;
 
-  @ApiProperty({ description: '昵称' })
+  @ApiProperty({ description: '昵称', required: false })
   nickname?: string;
 
-  @ApiProperty({ description: '邮箱' })
+  @ApiProperty({ description: '邮箱', required: false })
   email?: string;
 
   @Transform(ParseInt)
-  @ApiProperty({ description: '角色id' })
+  @ApiProperty({ description: '角色id', required: false })
   roleId?: number;
 
   @Transform(ParseBoolean)
-  @ApiProperty({ description: '是否启用' })
+  @ApiProperty({ description: '是否启用', required: false })
   enable?: boolean;
 }

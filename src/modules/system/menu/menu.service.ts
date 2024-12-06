@@ -1,9 +1,8 @@
 import { PrismaService } from '@/common/prisma/prisma.service';
-import { handleTree } from '@/utils/format';
+import { findListData } from '@/utils/common';
 import { Injectable } from '@nestjs/common';
-import { NodeType } from '@prisma/client';
+import { NodeType, Prisma } from '@prisma/client';
 import { CreateMenuDto } from './dto/menu.dto';
-import { MenuVo } from './dto/menu.vo';
 
 @Injectable()
 export class MenuService {
@@ -25,13 +24,13 @@ export class MenuService {
   }
 
   async findList() {
-    const data = await this.prismaService.menu.findMany({
+    return await findListData<Prisma.MenuFindManyArgs>(this.prismaService.menu, {
+      tree: true,
       where: {},
       include: {
         children: true
       }
     });
-    return handleTree(data) as MenuVo[];
   }
 
   async update(id: number, updateMenuDto: CreateMenuDto) {
