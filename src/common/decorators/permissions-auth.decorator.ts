@@ -9,12 +9,12 @@ export enum LogicalEnum {
   and = 1
 }
 
-export type PermissionObj = {
-  permissionArr: string[];
-  logical: LogicalEnum;
-};
+export interface PermissionObj {
+  permissionArr: string[]
+  logical: LogicalEnum
+}
 
-export const PermissionsAuth = (permissions: string | string[], logical: LogicalEnum = LogicalEnum.or) => {
+export function PermissionsAuth(permissions: string | string[], logical: LogicalEnum = LogicalEnum.or) {
   let permissionObj: PermissionObj = {
     permissionArr: [],
     logical
@@ -24,11 +24,12 @@ export const PermissionsAuth = (permissions: string | string[], logical: Logical
       permissionArr: [permissions],
       logical
     };
-  } else if (permissions instanceof Array) {
+  }
+  else if (Array.isArray(permissions)) {
     permissionObj = {
       permissionArr: permissions,
       logical
     };
   }
   return SetMetadata(PERMISSION_KEY_METADATA, permissionObj);
-};
+}

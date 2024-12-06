@@ -1,8 +1,15 @@
+import { vali } from '@/utils/common';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDefined, Matches } from 'class-validator';
 
 export class AccountLoginDto {
-  @ApiProperty({ description: '账号', example: 'admin' })
+  @IsDefined(vali('validation.not_defined'))
+  @Matches(/^\w{5,12}$/, vali('exception.user.username_is_invalid'))
+  @ApiProperty({ description: '账号', pattern: /^\w{5,12}$/.source })
   username: string;
-  @ApiProperty({ description: '密码', example: 'admin' })
+
+  @IsDefined(vali('validation.not_defined'))
+  @Matches(/^[\w.]{5,16}$/, vali('exception.user.password_is_invalid'))
+  @ApiProperty({ description: '密码', pattern: /^[\w.]{5,16}$/.source })
   password: string;
 }

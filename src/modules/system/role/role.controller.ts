@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
-import { RoleService } from './role.service';
-import { CreateRoleDto, RoleListDto } from './dto/role.dto';
-import { ApiTags } from '@nestjs/swagger';
 import { CommonApiResponse } from '@/common/decorators/apiResponse';
-import { PaginationPipe } from '@/common/pipes/pagination.pipe';
-import { RoleVo } from './dto/role.vo';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
+import { PaginationPipe } from '@/common/pipes/pagination.pipe';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateRoleDto, RoleListDto, UpdateRoleDto } from './dto/role.dto';
+import { RoleVo } from './dto/role.vo';
+import { RoleService } from './role.service';
+
 @ApiTags('系统管理-角色管理')
 @Controller('system/role')
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService) { }
 
   @Post()
   @CommonApiOperation({ summary: '创建角色', permissionCode: 'system:role:add' })
@@ -21,25 +22,25 @@ export class RoleController {
   @Get()
   @CommonApiOperation({ summary: '获取角色列表', permissionCode: 'system:role:list' })
   @CommonApiResponse({
-    type: 'array',
+    type: 'list',
     itemType: RoleVo
   })
   fineList(@Query(PaginationPipe) queryRoleList: RoleListDto) {
     return this.roleService.findList(queryRoleList);
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.roleService.findOne(+id);
-  // }
+  @Delete(':id')
+  @CommonApiOperation({ summary: '删除角色', permissionCode: 'system:role:delete' })
+  @CommonApiResponse()
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.roleService.removeById(id);
+  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-  //   return this.roleService.update(+id, updateRoleDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.roleService.remove(+id);
-  // }
+  // 修改角色
+  @Patch(':id')
+  @CommonApiOperation({ summary: '修改角色', permissionCode: 'system:role:update' })
+  @CommonApiResponse()
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.roleService.updateById(id, updateRoleDto);
+  }
 }

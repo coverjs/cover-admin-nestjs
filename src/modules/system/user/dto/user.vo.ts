@@ -18,8 +18,8 @@ export class UserInfoVo {
   enable: boolean;
 
   @ApiProperty({ description: '创建时间' })
-  createdAt: string;
+  createdAt: Date;
 
   @ApiProperty({ description: '更新日期' })
-  updatedAt: string;
+  updatedAt: Date;
 }

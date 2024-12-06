@@ -1,13 +1,13 @@
+import { PrismaService } from '@/common/prisma/prisma.service';
+import { handleTree } from '@/utils/format';
 import { Injectable } from '@nestjs/common';
+import { NodeType } from '@prisma/client';
 import { CreateMenuDto } from './dto/menu.dto';
 import { MenuVo } from './dto/menu.vo';
-import { PrismaService } from '@/common/prisma/prisma.service';
-import { NodeType } from '@prisma/client';
-import { handleTree } from '@/utils/format';
 
 @Injectable()
 export class MenuService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
   async create(createMenuData: CreateMenuDto) {
     if (createMenuData.type === NodeType.DIRECTORY && !createMenuData.icon) {
       createMenuData.icon = 'FolderOutlined';
@@ -31,7 +31,6 @@ export class MenuService {
         children: true
       }
     });
-
     return handleTree(data) as MenuVo[];
   }
 

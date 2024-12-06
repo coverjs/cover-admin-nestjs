@@ -38,6 +38,7 @@ Nestjs 开发的后台管理系统后端服务.
 - Nodejs 16.x 或更高版本
 - pnpm 9.x
 - MySQL 8.x 及以上
+- Redis 7.x 及以上
 
 ## 安装
 
@@ -47,21 +48,29 @@ pnpm install
 
 ## 首次运行
 
+### 配置环境变量
+
 - 将 .env.example 复制并重命名为 .env
 - 修改 .env 中的配置, 将 DATABASE_URL 改为你的 MySQL 连接地址
+- 修改.env 中的 REDIS_URL 为你本地的 Redis 的连接地址
 - 修改 .env 中的 JWT_SECRET 为一个随机字符串, 用于加密 JWT
 - 修改 .env 中的 PORT 为你想要的端口, 默认是 1118
 
-- 执行以下命令
+### 执行以下命令
 
 ```sh
+# 该命令会自动迁移数据库, 并初始化数据
 pnpm db:m
 ```
 
-该命令会自动迁移数据库, 并生成种子数据
-
-## 启动开发环境
+### 启动开发环境
 
 ```
 pnpm dev
 ```
+
+### debug
+
+- 在vscode中按F5进入调试模式
+
+启动vscode的调试模式之后就可以使用断点调试了

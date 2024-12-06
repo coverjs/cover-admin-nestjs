@@ -1,6 +1,7 @@
-import { HttpException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import { Path, TranslateOptions } from 'nestjs-i18n';
+import { I18nTranslations } from '../types/i18n';
 import { BusinessError } from './constants';
-import { BUSINESS_ERROR_CODE } from './business.error.code';
 
 /**
  * 自定义业务异常
@@ -8,69 +9,80 @@ import { BUSINESS_ERROR_CODE } from './business.error.code';
 export class BusinessException extends HttpException {
   constructor(err?: BusinessError) {
     // 处理公共错误
-    super(err, BUSINESS_ERROR_CODE.COMMON.code);
+    super(err, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   /**
-   * 抛出公共异常
+   * 抛出客户端异常
    */
-  static throwCommonError() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.COMMON);
+  static throwError(msg: Path<I18nTranslations>, options?: TranslateOptions) {
+    throw new BusinessException({
+      msg,
+      code: HttpStatus.BAD_REQUEST,
+      options
+    });
   }
 
   /**
    * 角色无操作权限
    */
   static throwNoPermissionToOperate() {
-    // throw new BusinessException(BUSINESS_ERROR_CODE.NO_PERMISSION_TO_OPERATE);
-  }
-
-  /**
-   * 字段不合法
-   * @param msg
-   */
-  static throwFieldsIncorrect() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.FIELD_INCORRECT);
+    throw new BusinessException({
+      code: HttpStatus.FORBIDDEN,
+      msg: 'error.auth.no_operational_permissions'
+    });
   }
 
   /**
    * 无效token或已过期
    */
   static throwInvalidToken() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.INVALID_TOKEN);
+    throw new BusinessException({
+      code: HttpStatus.UNAUTHORIZED,
+      msg: 'error.auth.invalid_token'
+    });
   }
 
   /**
    * 用户不存在
    */
   static throwUserNotExist() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.USER_DOES_NOT_EXIST);
+    throw new BadRequestException('error.user.user_not_exist');
   }
 
   /**
    * 账号或密码错误
    */
   static throwUsernameOrPasswordIncorrect(): void {
-    throw new BusinessException(BUSINESS_ERROR_CODE.USERNAME_OR_PASSWORD_INCORRECT);
+    throw new BadRequestException('error.user.username_or_password_incorrect');
   }
 
   /**
    * 修改密码时旧的密码验证错误
    */
   static throwOldPasswordIncorrect() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.OLD_PASSWORD_INCORRECT);
+    throw new BadRequestException('error.profile.old_password_incorrect');
   }
 
   /**
    * 角色名重复
    */
   static throwRoleNameExist() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.ROLE_NAME_EXIST);
+    throw new BadRequestException('error.role.role_name_exist');
   }
-  /**
-   * 数据已被保护
-   */
-  static throwDataProtected() {
-    throw new BusinessException(BUSINESS_ERROR_CODE.DATA_PROTECTED);
+
+  // 演示环境禁止操作
+  static throwDemoEnvForbidden() {
+    throw new BadRequestException('error.common.demo_env_forbidden');
+  }
+
+  // 角色正在使用
+  static throwRoleInUse() {
+    throw new BadRequestException('error.role.role_in_use');
+  }
+
+  // 角色不存在
+  static throwRoleNotExist() {
+    throw new BadRequestException('error.role.role_not_exist');
   }
 }
