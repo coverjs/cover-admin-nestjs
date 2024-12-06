@@ -2,10 +2,10 @@ import { CommonApiResponse } from '@/common/decorators/apiResponse';
 import { CommonApiOperation } from '@/common/decorators/common-api-operation.dec';
 import { PaginationPipe } from '@/common/pipes/pagination.pipe';
 import { XlsxService } from '@/common/xlsx/xlsx.service';
-import { Body, Controller, Get, Post, Query, Response } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Response } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response as Rs } from 'express';
-import { CreateUserDto, UserListDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto, UserListDto } from './dto/user.dto';
 import { UserInfoVo } from './dto/user.vo';
 import { UserService } from './user.service';
 
@@ -29,6 +29,20 @@ export class UserController {
   @CommonApiResponse({ type: 'list', itemType: UserInfoVo })
   findList(@Query(PaginationPipe) queryUserList: UserListDto) {
     return this.userService.findList(queryUserList);
+  }
+
+  @Delete(':id')
+  @CommonApiOperation({ summary: '根据id删除用户', permissionCode: 'system:user.delete' })
+  @CommonApiResponse()
+  deleteUser(@Param('id') id: number) {
+    return this.userService.deleteUserById(id);
+  }
+
+  @Patch(':id')
+  @CommonApiOperation({ summary: '根据id修改用户', permissionCode: 'system:user:update' })
+  @CommonApiResponse()
+  updateUser(@Param('id') id: number, @Body() userInfo: UpdateUserDto) {
+    return this.userService.updateUserById(id, userInfo);
   }
 
   @Get('export')

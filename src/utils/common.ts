@@ -6,6 +6,7 @@ import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 import { TransformFnParams } from 'class-transformer';
 import { isBoolean, isBooleanString, isEmpty, isNumber, isNumberString, ValidationArguments, ValidationOptions } from 'class-validator';
 import { Path } from 'nestjs-i18n';
+import { handleTree } from './format';
 
 export function isDev() {
   return process.env.NODE_ENV === 'development';
@@ -27,11 +28,17 @@ export function recursiveFilter(data: { [key: string]: any } | any[], keyToFilte
   return data;
 }
 
-export async function findListData<T>(model, options: T, filterField?: string[]) {
+export async function findListData<T>(model, options: T & { tree?: boolean }, filterField?: string[]) {
   const where = (options as { [key: string]: any }).where;
-  const list = await model.findMany({
-    ...options
+  const { tree, ...resOpt } = options;
+  let list = await model.findMany({
+    ...resOpt
   });
+
+  if (tree) {
+    list = handleTree(list);
+  }
+
   const total = await model.count({ where });
   return {
     list: list.map(item => recursiveFilter(item, filterField)),

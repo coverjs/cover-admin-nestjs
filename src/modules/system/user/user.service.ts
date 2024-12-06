@@ -4,7 +4,7 @@ import { findListData } from '@/utils/common';
 import { encryptPassword, makeSalt } from '@/utils/cryptogram';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { CreateUserDto, UserListDto } from './dto/user.dto';
+import { CreateUserDto, UpdateUserDto, UserListDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -13,6 +13,10 @@ export class UserService {
   // 新建用户
   async create(createUserDto: CreateUserDto) {
     const { password, username } = createUserDto;
+    const role = await this.prismaService.role.findUnique({ where: { id: createUserDto.roleId } });
+    if (!role) {
+      BusinessException.throwError('exception.role.role_not_exist');
+    }
     const salt = makeSalt();
     createUserDto.password = encryptPassword(password, salt);
     const user = await this.prismaService.user.findUnique({ where: { username } });
@@ -27,9 +31,9 @@ export class UserService {
     });
   }
 
+  // 查询列表
   async findList(queryUserList: UserListDto) {
     const { skip, take, username, email, nickname, enable, roleId } = queryUserList;
-
     return await findListData<Prisma.UserFindManyArgs>(this.prismaService.user, {
       where: {
         username: {
@@ -50,6 +54,7 @@ export class UserService {
     }, ['password', 'salt']);
   }
 
+  // 查询一条
   async findOne(id: number) {
     const { password, salt, ...res } = await this.prismaService.user.findUnique({
       where: {
@@ -62,6 +67,28 @@ export class UserService {
     return res;
   }
 
+  // 删除一条
+  async deleteUserById(id: number) {
+    await this.prismaService.$transaction([
+      this.prismaService.user.delete({ where: { id } })
+    ]);
+  };
+
+  // 修改一条
+  async updateUserById(id: number, data: UpdateUserDto) {
+    const role = await this.prismaService.role.findUnique({ where: { id: data.roleId } });
+    if (!role) {
+      BusinessException.throwError('exception.role.role_not_exist');
+    }
+    await this.prismaService.$transaction([
+      this.prismaService.user.update({
+        where: { id },
+        data
+      })
+    ]);
+  }
+
+  // 导出数据
   async exportUser(queryUserList: UserListDto) {
     const nameMap: {
       [key: string]: string

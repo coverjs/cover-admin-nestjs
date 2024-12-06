@@ -8,8 +8,8 @@ export class UserInfoVo {
   @ApiProperty({ description: '昵称' })
   nickname: string;
 
-  @ApiProperty({ description: '邮箱' })
-  email: string;
+  @ApiProperty({ description: '邮箱', required: false })
+  email?: string;
 
   @ApiProperty({ description: '角色' })
   role: RoleVo;
