@@ -43,6 +43,7 @@ export type I18nTranslations = {
         "common": {
             "abnormal_request": string;
             "demo_env_forbidden": string;
+            "not_found": string;
         };
         "auth": {
             "no_operational_permissions": string;

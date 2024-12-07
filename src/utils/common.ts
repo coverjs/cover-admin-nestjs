@@ -152,6 +152,23 @@ function isIPv6Address(address: string): boolean {
 function isIpv4Address(address: string): boolean {
   return Address4.isValid(address);
 }
+// export function IsMobile(validationOptions?: ValidationOptions) {
+//   return function (object: object, propertyName: string) {
+//     registerDecorator({
+//       name: 'IsMobile',
+//       target: object.constructor,
+//       propertyName,
+//       constraints: [],
+//       options: validationOptions,
+//       validator: {
+//         validate: (value: any) => isMobileNumber(value),
+//         defaultMessage: (validationArguments?: ValidationArguments) => {
+//           return `${validationArguments.property}不是有效的手机号码`;
+//         }
+//       }
+//     });
+//   };
+// }
 
 export function Demo(options?: ApiPropertyOptions) {
   return applyDecorators(ApiProperty(options));
