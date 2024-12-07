@@ -10,10 +10,7 @@ export class ChatMessageDto {
 
 export class ChatDto {
   @ApiProperty({ description: '消息内容列表', type: ChatMessageDto, isArray: true })
-  message: ChatMessageDto[];
-
-  @ApiProperty({ description: '是否使用流式数据' })
-  stream: boolean;
+  messages: ChatMessageDto[];
 }
 
 export class OpenAiModelsListDto {

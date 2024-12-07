@@ -9,8 +9,14 @@ import { OpenaiService } from './openai.service';
 export class OpenaiController {
   constructor(private readonly openaiService: OpenaiService) {}
 
-  @Post()
-  @Sse('/chat')
+  @Post('/chat')
+  @CommonApiOperation({ summary: 'AI聊天', isPublic: true })
+  getChat(@Body() chatData: ChatDto) {
+    return this.openaiService.getMessageData(chatData);
+  }
+
+  @Post('/chat/stream')
+  @Sse('/chat/stream')
   @Header('Content-type', 'text/event-stream')
   @CommonApiOperation({ summary: 'AI聊天', isPublic: true })
   @ApiResponse({
@@ -22,12 +28,7 @@ export class OpenaiController {
       }
     }
   })
-  getChat(@Body() chatData: ChatDto) {
-    if (chatData.stream) {
-      return this.openaiService.getMessageStreamData(chatData);
-    }
-    else {
-      return this.openaiService.getMessageData(chatData);
-    }
+  getChatStream(@Body() chatData: ChatDto) {
+    return this.openaiService.getMessageStreamData(chatData);
   }
 }

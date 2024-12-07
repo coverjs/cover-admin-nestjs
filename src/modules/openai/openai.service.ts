@@ -24,9 +24,10 @@ export class OpenaiService extends OpenAI {
   }
 
   async getMessageData(chatData: ChatDto) {
-    this.chat.completions.create({
+    return await this.chat.completions.create({
       ...this.options,
-      ...chatData
+      ...chatData,
+      stream: false
     });
   }
 
@@ -34,7 +35,8 @@ export class OpenaiService extends OpenAI {
     return new Observable(subscribe => {
       this.chat.completions.create({
         ...this.options,
-        ...chatData
+        ...chatData,
+        stream: true
       }).then(async (res: Stream<OpenAI.ChatCompletionChunk>) => {
         for await (const chunk of res) {
           subscribe.next(chunk);
