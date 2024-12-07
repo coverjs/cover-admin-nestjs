@@ -16,11 +16,12 @@ export class ExeptionsFilter implements ExceptionFilter {
     const i18n = I18nContext.current(host);
     const ctx = host.switchToHttp();
     const respones = ctx.getResponse<Response>();
-    // const request = ctx.getRequest<Request>();
+    const error: any = exception.getResponse();
+    this.logger.error('系统错误', exception);
 
     // 处理自定义业务异常
     if (exception instanceof BusinessException) {
-      const error: any = exception.getResponse();
+      // const error: any = exception.getResponse();
       respones.status(HttpStatus.OK).send({
         code: error?.code,
         msg: i18n.t(error.msg, error.options) // 返回对应语言的异常信息
@@ -46,8 +47,6 @@ export class ExeptionsFilter implements ExceptionFilter {
       });
       return;
     }
-
-    this.logger.error(exception);
 
     // 其他异常使用通用状态码返回
     respones.status(HttpStatus.OK).send({
