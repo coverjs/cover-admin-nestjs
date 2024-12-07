@@ -1,7 +1,8 @@
 {
   "common": {
     "abnormal_request": "非正常请求",
-    "demo_env_forbidden": "演示环境,禁止操作"
+    "demo_env_forbidden": "演示环境,禁止操作",
+    "not_found": "未定义的接口"
   },
   "auth": {
     "no_operational_permissions": "您没有操作该资源的权限",

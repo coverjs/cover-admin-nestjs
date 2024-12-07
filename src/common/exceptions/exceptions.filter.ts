@@ -1,4 +1,4 @@
-import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Response } from 'express';
 import { I18nContext, Path } from 'nestjs-i18n';
 import { Logger } from 'nestjs-pino';
@@ -49,7 +49,13 @@ export class ExeptionsFilter implements ExceptionFilter {
 
     this.logger.error(exception);
 
-    // 其他异常使用通用状态码返回
+    if (exception instanceof NotFoundException) {
+      respones.status(HttpStatus.OK).send({
+        code: HttpStatus.NOT_FOUND,
+        msg: i18n.t<Path<I18nTranslations>>('exception.common.not_found') // 返回对应语言的异常信息
+      });
+    }
+
     respones.status(HttpStatus.OK).send({
       code: HttpStatus.INTERNAL_SERVER_ERROR,
       msg: i18n.t<Path<I18nTranslations>>('error.common.abnormal_request') // 返回对应语言的异常信息

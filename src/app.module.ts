@@ -5,6 +5,7 @@ import { XlsxModule } from '@/common/xlsx/xlsx.module';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { LoggerModule } from 'nestjs-pino';
 import { ExeptionsFilter } from './common/exceptions';
@@ -14,6 +15,7 @@ import { PermissionAuthGuard } from './common/guard/permission-auth.guard';
 import { ResponseInterceptor } from './common/interceptor';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { OpenaiModule } from './modules/openai/openai.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { MenuModule } from './modules/system/menu/menu.module';
 import { RoleModule } from './modules/system/role/role.module';
@@ -48,14 +50,16 @@ import { UploadModule } from './modules/upload/upload.module';
     }),
     // 加载环境变量
     ConfigModule.forRoot({ isGlobal: true }),
+    EventEmitterModule.forRoot(),
     PrismaModule,
+    OpenaiModule,
     AuthModule,
     ProfileModule,
     UserModule,
     RoleModule,
     MenuModule,
     UploadModule,
-    XlsxModule
+    XlsxModule,
   ],
   providers: [
 
