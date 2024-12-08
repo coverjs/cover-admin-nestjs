@@ -29,7 +29,7 @@ export class Exception extends HttpException {
   static throwNoPermissionToOperate() {
     throw new Exception({
       code: HttpStatus.FORBIDDEN,
-      msg: 'error.auth.no_operational_permissions'
+      msg: 'exception.auth.no_operational_permissions'
     });
   }
 
@@ -39,7 +39,7 @@ export class Exception extends HttpException {
   static throwInvalidToken() {
     throw new Exception({
       code: HttpStatus.UNAUTHORIZED,
-      msg: 'error.auth.invalid_token'
+      msg: 'exception.auth.invalid_token'
     });
   }
 }

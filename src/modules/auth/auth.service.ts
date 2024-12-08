@@ -77,7 +77,7 @@ export class AuthService {
       checkRedisTransactionStatus(result);
       return { token };
     }
-    BusinessException.throwUsernameOrPasswordIncorrect();
+    BusinessException.throwError('exception.user.username_or_password_incorrect');
   }
 
   async logout(userId: number) {

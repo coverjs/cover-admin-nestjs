@@ -17,7 +17,7 @@ export class DemoEnvGuard implements CanActivate {
 
     // 如果是演示环境，只允许GET请求和登录、登出接口
     if (request.method !== 'GET' && !allowUrlArr.includes(request.url)) {
-      BusinessException.throwDemoEnvForbidden();
+      BusinessException.throwError('exception.common.demo_env_forbidden');
     }
     return true;
   }

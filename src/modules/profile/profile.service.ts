@@ -73,6 +73,6 @@ export class ProfileService {
         }
       });
     }
-    BusinessException.throwOldPasswordIncorrect();
+    BusinessException.throwError('exception.profile.old_password_incorrect');
   }
 }

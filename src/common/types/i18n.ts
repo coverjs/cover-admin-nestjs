@@ -5,31 +5,6 @@
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
 export type I18nTranslations = {
-    "error": {
-        "common": {
-            "abnormal_request": string;
-            "demo_env_forbidden": string;
-        };
-        "auth": {
-            "no_operational_permissions": string;
-            "invalid_token": string;
-        };
-        "user": {
-            "username_cannot_be_empty": string;
-            "password_cannot_be_empty": string;
-            "user_not_exist": string;
-            "username_or_password_incorrect": string;
-            "login_other_device": string;
-        };
-        "role": {
-            "role_name_exist": string;
-            "role_in_use": string;
-            "role_not_exist": string;
-        };
-        "profile": {
-            "old_password_incorrect": string;
-        };
-    };
     "validation": {
         "not_defined": string;
         "not_empty": string;
@@ -57,6 +32,7 @@ export type I18nTranslations = {
             "username_or_password_incorrect": string;
             "username_is_invalid": string;
             "password_is_invalid": string;
+            "login_other_device": string;
         };
         "role": {
             "role_name_exist": string;

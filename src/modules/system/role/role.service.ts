@@ -11,7 +11,7 @@ export class RoleService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly redisService: RedisService
-  ) { }
+  ) {}
 
   async create(createRoleDto: CreateRoleDto) {
     const { name } = createRoleDto;
@@ -20,8 +20,9 @@ export class RoleService {
       where: { name }
     });
 
-    if (role)
-      BusinessException.throwRoleNameExist();
+    if (role) {
+      BusinessException.throwError('exception.role.role_name_exist');
+    }
 
     await this.prismaService.role.create({
       data: {
@@ -46,8 +47,10 @@ export class RoleService {
       where: { id }
     });
 
-    if (!role)
-      BusinessException.throwRoleNotExist();
+    if (!role) {
+      BusinessException.throwError('exception.role.role_not_exist');
+    }
+
     // 判断当前角色是否有用户使用
     const user = await this.prismaService.user.findFirst({
       where: {
@@ -57,8 +60,9 @@ export class RoleService {
       }
     });
 
-    if (user)
-      BusinessException.throwRoleInUse();
+    if (user) {
+      BusinessException.throwError('exception.role.role_in_use');
+    }
 
     await this.prismaService.role.delete({
       where: { id }
@@ -71,8 +75,9 @@ export class RoleService {
     const { menuIds, ...params } = updateRoleDto;
 
     const role = await this.prismaService.role.findUnique({ where: { id } });
-    if (!role)
-      BusinessException.throwRoleNotExist();
+    if (!role) {
+      BusinessException.throwError('exception.role.role_not_exist');
+    }
 
     if (role.name !== name) {
       const oldRole = await this.prismaService.role.findUnique({
@@ -80,7 +85,7 @@ export class RoleService {
       });
 
       if (oldRole)
-        BusinessException.throwRoleNameExist();
+        BusinessException.throwError('exception.role.role_name_exist');
     }
 
     await this.prismaService.role.update({

@@ -87,7 +87,7 @@ export class ExeptionsFilter implements ExceptionFilter {
 
     respones.status(HttpStatus.OK).send({
       code: HttpStatus.INTERNAL_SERVER_ERROR,
-      msg: i18n.t<Path<I18nTranslations>>('error.common.abnormal_request')
+      msg: i18n.t<Path<I18nTranslations>>('exception.common.abnormal_request')
     });
   }
 }
