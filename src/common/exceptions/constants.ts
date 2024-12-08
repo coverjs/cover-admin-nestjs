@@ -6,5 +6,3 @@ export interface BusinessError {
   msg: Path<I18nTranslations>
   options?: TranslateOptions
 }
-
-export const CODE_LOGIN_OTHER_DEVICE = 1000;
