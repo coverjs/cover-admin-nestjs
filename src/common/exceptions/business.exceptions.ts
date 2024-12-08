@@ -1,7 +1,7 @@
 import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 import { Path, TranslateOptions } from 'nestjs-i18n';
 import { I18nTranslations } from '../types/i18n';
-import { BusinessError, CODE_LOGIN_OTHER_DEVICE } from './constants';
+import { BusinessError } from './constants';
 
 /**
  * 自定义业务异常
@@ -87,6 +87,6 @@ export class BusinessException extends HttpException {
   }
 
   static throwLoginOtherDevice() {
-    return new BusinessException({ msg: 'error.user.login_other_device', code: CODE_LOGIN_OTHER_DEVICE });
+    return new BusinessException({ msg: 'error.user.login_other_device', code: HttpStatus.CONFLICT });
   }
 }
