@@ -1,5 +1,5 @@
 import { applyDecorators, Type } from '@nestjs/common';
-import { ApiExtraModels, ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger';
+import { ApiExtraModels, ApiOkResponse, ApiResponse, ApiResponseOptions, getSchemaPath } from '@nestjs/swagger';
 import { ReferenceObject, SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 import { CommonResponseVo } from '../dto';
 import { UnityResponseOptions } from '../types';
@@ -79,7 +79,7 @@ function handleSwaggerResponse(options: UnityResponseOptions & { example?: any, 
 
 // 自定义 swagger 统一响应数据模型
 export function CommonApiResponse(options: UnityResponseOptions & { example?: any, itemType?: Type<any>, isPublic?: boolean } = {}) {
-  let decorators = [ApiResponse(handleSwaggerResponse(options))];
+  let decorators = [ApiOkResponse(handleSwaggerResponse(options)), ApiResponse({ type: CommonResponseVo })];
   if (options.type && typeof options.type !== 'string') {
     decorators = [...decorators, ApiExtraModels(options.type)];
   }
