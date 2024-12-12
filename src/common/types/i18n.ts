@@ -38,6 +38,7 @@ export type I18nTranslations = {
             "role_name_exist": string;
             "role_in_use": string;
             "role_not_exist": string;
+            "role_permisstions_update": string;
         };
         "profile": {
             "old_password_incorrect": string;

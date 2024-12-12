@@ -84,8 +84,9 @@ export class RoleService {
         where: { name }
       });
 
-      if (oldRole)
+      if (oldRole) {
         BusinessException.throwError('exception.role.role_name_exist');
+      }
     }
 
     await this.prismaService.role.update({
@@ -100,7 +101,7 @@ export class RoleService {
     await this.updateUserVersionByRoleId(id);
   }
 
-  /* 让该角色下的所有用户的的缓存版本号增加 ， 让他们重新登录 */
+  /* 让该角色下的所有用户的的缓存版本号增加 ，让他们重新登录 */
   async updateUserVersionByRoleId(roleId: number) {
     const users = await this.prismaService.user.findMany({
       where: {

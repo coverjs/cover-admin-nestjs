@@ -36,14 +36,13 @@ export class OpenaiService extends OpenAI {
       this.chat.completions.create({
         ...this.options,
         ...chatData,
-        stream: true
+        stream: true,
       }).then(async (res: Stream<OpenAI.ChatCompletionChunk>) => {
         for await (const chunk of res) {
-          subscribe.next(chunk);
           if (chunk.choices[0].finish_reason === 'stop') {
-            subscribe.next(chunk);
             return subscribe.complete();
           }
+          subscribe.next(chunk);
         }
       });
     });

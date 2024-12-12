@@ -18,7 +18,7 @@ export class OpenaiController {
   @Post('/chat/stream')
   @Sse('/chat/stream')
   @Header('Content-type', 'text/event-stream')
-  @CommonApiOperation({ summary: 'AI聊天', isPublic: true })
+  @CommonApiOperation({ summary: 'AI聊天(流式响应)', isPublic: true })
   @ApiResponse({
     content: {
       'text/plain': {
