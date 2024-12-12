@@ -9,7 +9,6 @@ export class AccountLoginDto {
   username: string;
 
   @IsDefined(vali('validation.not_defined'))
-  @Matches(/^[\w.]{5,16}$/, vali('exception.user.password_is_invalid'))
-  @ApiProperty({ description: '密码', pattern: /^[\w.]{5,16}$/.source })
+  @ApiProperty({ description: '密码' })
   password: string;
 }

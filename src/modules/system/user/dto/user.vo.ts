@@ -11,6 +11,9 @@ export class UserInfoVo {
   @ApiProperty({ description: '邮箱', required: false })
   email?: string;
 
+  @ApiProperty({ description: '角色id' })
+  roleId: number;
+
   @ApiProperty({ description: '角色' })
   role: RoleVo;
 

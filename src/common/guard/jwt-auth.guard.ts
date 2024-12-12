@@ -71,10 +71,10 @@ export class JwtAuthGuard implements CanActivate {
           throw BusinessException.throwLoginOtherDevice();
         }
 
-        // 用户数据版本号不一致则抛出异常
+        // 用户数据版本号不一致则抛出异常(账号角色权限已更新)
         const cacheVersion = await this.redis.get(`${USER_VERSION_KEY}:${user.id}`);
         if (Number(cacheVersion) !== version)
-          BusinessException.throwInvalidToken();
+          BusinessException.throwRolePermisstionsUpdate();
 
         // 写入对象
         req.user = user;

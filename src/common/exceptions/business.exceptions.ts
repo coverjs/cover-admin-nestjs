@@ -43,6 +43,13 @@ export class BusinessException extends HttpException {
     });
   }
 
+  static throwRolePermisstionsUpdate() {
+    throw new BusinessException({
+      code: HttpStatus.GONE,
+      msg: 'exception.role.role_permisstions_update'
+    });
+  }
+
   static throwLoginOtherDevice() {
     return new BusinessException({ msg: 'exception.user.login_other_device', code: HttpStatus.CONFLICT });
   }

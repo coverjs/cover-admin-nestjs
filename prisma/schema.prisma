@@ -24,6 +24,8 @@ model User {
   username  String   @unique
   password  String
   email     String?
+  mobile    String?
+  avatar    String?
   nickname  String?
   salt      String   @default("")
   role      Role     @relation(fields: [roleId], references: [id])

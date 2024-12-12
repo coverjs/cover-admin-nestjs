@@ -21,7 +21,8 @@
   "role": {
     "role_name_exist": "角色名已存在",
     "role_in_use": "该角色正在被使用",
-    "role_not_exist": "角色不存在"
+    "role_not_exist": "角色不存在",
+    "role_permisstions_update": "当前账号的角色权限已更新,请重新登录"
   },
   "profile": {
     "old_password_incorrect": "密码验证错误"
