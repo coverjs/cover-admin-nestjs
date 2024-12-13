@@ -39,7 +39,16 @@ export class AuthService {
       }
     });
 
-    if (userInfo && userInfo?.password === encryptPassword(password, userInfo.salt)) {
+    const verifyPwd = () => {
+      if (config.passwordEncryption) {
+        return userInfo?.password === encryptPassword(password, userInfo.salt);
+      }
+      else {
+        return userInfo.password === password;
+      }
+    };
+
+    if (userInfo && verifyPwd()) {
       const userTokenKey = `${USER_TOKEN_KEY}:${userInfo.id}`;
       const userInfoKey = `${USER_INFO_KEY}:${userInfo.id}`;
       const userVersionKey = `${USER_VERSION_KEY}:${userInfo.id}`;
