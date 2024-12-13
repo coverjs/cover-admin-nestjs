@@ -65,11 +65,19 @@ export class ProfileService {
     const userInfo = await this.prismaService.user.findUnique({
       where: { id: user.id }
     });
-    if (userInfo && userInfo.password === encryptPassword(info.oldPassword, userInfo.salt)) {
+    const verifyPwd = () => {
+      if (config.passwordEncryption) {
+        return userInfo.password === encryptPassword(info.oldPassword, userInfo.salt);
+      }
+      else {
+        return userInfo.password === info.oldPassword;
+      }
+    };
+    if (userInfo && verifyPwd()) {
       await this.prismaService.user.update({
         where: { id: user.id },
         data: {
-          password: encryptPassword(info.newPassword, userInfo.salt)
+          password: config.passwordEncryption ? encryptPassword(info.newPassword, userInfo.salt) : info.newPassword
         }
       });
     }

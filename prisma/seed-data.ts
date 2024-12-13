@@ -1,9 +1,10 @@
 import { NodeType } from '@prisma/client';
+import config from '../src/config'
 
 export const User = [
   {
     username: 'admin',
-    password: 'ZN7CwACwQj0ZooEai8zyjw==',
+    password: '7dd12f3a9afa0282a575b8ef99dea2a0c1becb51==',
     salt: '1118',
     nickname: 'hacxy',
     email: 'hacxy.js@outlook.com',
@@ -14,7 +15,7 @@ export const User = [
 export const Role = [
   {
     id: 1,
-    name: 'admin',
+    name: config.adminRole,
     description: '管理员'
   }
 ];
@@ -140,7 +141,7 @@ export const Menu = [
     parentId: 12
   },
   {
-    id: 14,
+    id: 15,
     name: '修改菜单',
     code: 'system:menu:update',
     type: NodeType.ACTION,
@@ -148,7 +149,7 @@ export const Menu = [
     parentId: 12
   },
   {
-    id: 14,
+    id: 16,
     name: '删除菜单',
     code: 'system:menu:delete',
     type: NodeType.ACTION,

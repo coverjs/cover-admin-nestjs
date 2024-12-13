@@ -1,5 +1,6 @@
 import { BusinessException } from '@/common/exceptions';
 import { PrismaService } from '@/common/prisma/prisma.service';
+import config from '@/config';
 import { findListData } from '@/utils/common';
 import { encryptPassword, makeSalt } from '@/utils/cryptogram';
 import { Injectable } from '@nestjs/common';
@@ -13,12 +14,16 @@ export class UserService {
   // 新建用户
   async create(createUserDto: CreateUserDto) {
     const { password, username } = createUserDto;
+    const salt = config.passwordEncryption ? makeSalt() : '';
     const role = await this.prismaService.role.findUnique({ where: { id: createUserDto.roleId } });
     if (!role) {
       BusinessException.throwError('exception.role.role_not_exist');
     }
-    const salt = makeSalt();
-    createUserDto.password = encryptPassword(password, salt);
+
+    if (config.passwordEncryption) {
+      createUserDto.password = encryptPassword(password, salt);
+    }
+
     const user = await this.prismaService.user.findUnique({ where: { username } });
     if (user) {
       BusinessException.throwError('exception.user.username_already_exists');
