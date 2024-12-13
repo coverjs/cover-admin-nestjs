@@ -3,7 +3,7 @@ import { NodeType } from '@prisma/client';
 export const User = [
   {
     username: 'admin',
-    password: '7dd12f3a9afa0282a575b8ef99dea2a0c1becb51==',
+    password: '21232f297a57a5a743894a0e4a801fc3',
     salt: '1118',
     nickname: 'hacxy',
     email: 'hacxy.js@outlook.com',
