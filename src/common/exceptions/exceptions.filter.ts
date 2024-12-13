@@ -16,7 +16,7 @@ export class ExeptionsFilter implements ExceptionFilter {
     const i18n = I18nContext.current(host);
     const ctx = host.switchToHttp();
     const respones = ctx.getResponse<Response>();
-    const error: any = exception.getResponse();
+    const error: any = exception?.getResponse();
     this.logger.error('系统错误', exception);
 
     // 处理自定义业务异常

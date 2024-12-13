@@ -18,7 +18,7 @@ export class BusinessException extends HttpException {
   static throwError(msg: Path<I18nTranslations>, options?: TranslateOptions & { code?: number }) {
     throw new BusinessException({
       msg,
-      code: options.code && HttpStatus.BAD_REQUEST,
+      code: options?.code || HttpStatus.BAD_REQUEST,
       options
     });
   }
