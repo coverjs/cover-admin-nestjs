@@ -7,4 +7,3 @@ export interface BusinessError {
   options?: TranslateOptions
 }
 
-export const CODE_LOGIN_OTHER_DEVICE = 1000;
